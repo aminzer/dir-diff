@@ -1,5 +1,5 @@
 {
-  "name": "dir-diff",
+  "name": "@aminzer/dir-diff",
   "description": "Utility for recursive synchronous directory comparison",
   "version": "1.0.0",
   "main": "./lib/dir_diff.js",
