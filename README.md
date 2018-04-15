@@ -5,7 +5,7 @@ Utility for recursive synchronous directory comparison.
 ### Installation
 
 ```
-npm install dir-diff
+npm install @aminzer/dir-diff
 ```
 
 ### Usage Example
@@ -71,7 +71,7 @@ Arrays corresponding to `added`, `modified` and `removed` keys consist of `FsEnt
 ##### Installation
 
 ```
-npm install -g dir-diff
+npm install -g @aminzer/dir-diff
 ```
 
 ##### Usage Example
