@@ -1,7 +1,7 @@
 {
   "name": "@aminzer/dir-diff",
   "description": "Utility for recursive synchronous directory comparison",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./lib/dir_diff.js",
   "bin": {
     "dir-diff": "./bin/dir_diff.js"
