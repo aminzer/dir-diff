@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const { expect } = require('./chai');
 const FsEntry = require('../lib/fs_entry');
 
 describe('FsEntry', function () {

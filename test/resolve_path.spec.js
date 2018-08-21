@@ -1,4 +1,4 @@
-const expect = require('chai').expect;
+const { expect } = require('./chai');
 const resolvePath = require('../lib/resolve_path');
 
 describe('resolvePath', function () {

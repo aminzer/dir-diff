@@ -1,6 +1,6 @@
 ### Overview
 
-Utility for recursive synchronous directory comparison.
+Utility for recursive directory comparison.
 
 ### Installation
 
@@ -13,12 +13,13 @@ npm install @aminzer/dir-diff
 ```javascript
 const dirDiff = require('dir-diff');
 
-const diff = dirDiff('/source', '/target');
-
-console.log('New files and directories:');
-diff.added.forEach(entry => {
-  console.log(entry.relativePath);
-});
+dirDiff('/source', '/target')
+  .then(diff => {
+     console.log('New files and directories:');
+     diff.added.forEach(entry => {
+       console.log(entry.relativePath);
+     });
+  });
 ```
 
 ### Description
@@ -29,7 +30,7 @@ dirDiff(sourcePath, targetPath, opts)
 
 ##### Return value
 
-`dirDiff` returns `Object` in following format:
+`dirDiff` returns `Promise`. Fulfilled value -`Object` in following format:
 ```
 {
   added: Array,

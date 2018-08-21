@@ -1,7 +1,12 @@
 {
   "name": "@aminzer/dir-diff",
-  "description": "Utility for recursive synchronous directory comparison",
+  "description": "Utility for recursive directory comparison",
   "version": "1.0.1",
+  "keywords": [
+    "directory",
+    "difference",
+    "comparison"
+  ],
   "main": "./lib/dir_diff.js",
   "bin": {
     "dir-diff": "./bin/dir_diff.js"
@@ -16,8 +21,9 @@
     "url": "https://github.com/aminzer/dir-diff.git"
   },
   "dependencies": {
+    "chai-as-promised": "^7.1.1",
     "command-line-args": "^5.0.2",
-    "md5-file": "^3.2.3",
+    "md5-file": "^4.0.0",
     "single-line-log": "^1.1.2"
   },
   "devDependencies": {
