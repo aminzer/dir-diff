@@ -32,7 +32,7 @@ describe('dirDiff', function () {
     const allRemovedEntries = filterEntries(expectedTargetEntries, 'removed');
 
     context('when no additional options are passed', function () {
-      it('returns object with all added, modified and removed files/directories', async function () {
+      it('returns Promise fulfilled with object with all added, modified and removed files/directories', async function () {
         const diff = await dirDiff(sourcePath, targetPath);
         const expectedDiff = {
           added: allAddedEntries,
@@ -45,7 +45,7 @@ describe('dirDiff', function () {
     });
 
     context('when "skipRemoved" option is set to true', function () {
-      it('doesn\'t return removed files/directories', async function () {
+      it('doesn\'t fulfilled with removed files/directories', async function () {
         const diff = await dirDiff(sourcePath, targetPath, { skipRemoved: true });
         const expectedDiff = {
           added: allAddedEntries,
@@ -58,7 +58,7 @@ describe('dirDiff', function () {
     });
 
     context('when "skipModified" option is set to true', function () {
-      it('doesn\'t return modified files', async function () {
+      it('doesn\'t fulfilled with modified files', async function () {
         const diff = await dirDiff(sourcePath, targetPath, { skipModified: true });
         const expectedDiff = {
           added: allAddedEntries,
@@ -71,7 +71,7 @@ describe('dirDiff', function () {
     });
 
     context('when "skipContentComparison" option is set to true', function () {
-      it('doesn\'t return modified files with preserved size but changed content', async function () {
+      it('doesn\'t fulfilled with modified files with preserved size but changed content', async function () {
         const diff = await dirDiff(sourcePath, targetPath, { skipContentComparison: true });
 
         const expectedDiff = {
@@ -85,7 +85,7 @@ describe('dirDiff', function () {
     });
 
     context('when "skipExtraIterations" option is set to true', function () {
-      it('doesn\'t return children of added/removed directories', async function () {
+      it('doesn\'t fulfilled with children of added/removed directories', async function () {
         const diff = await dirDiff(sourcePath, targetPath, { skipExtraIterations: true });
 
         const expectedDiff = {
