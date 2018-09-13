@@ -78,7 +78,7 @@ npm install -g @aminzer/dir-diff
 ##### Usage Example
 
 ```
-> dir-diff --source "d:/work" --target "f:/backups/work"
+dir-diff --source "d:/work" --target "f:/backups/work"
 ```
 
 ##### Arguments
