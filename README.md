@@ -11,7 +11,7 @@ npm install @aminzer/dir-diff
 ### Usage Example
 
 ```javascript
-const dirDiff = require('dir-diff');
+const dirDiff = require('@aminzer/dir-diff');
 
 dirDiff('d:/work', 'f:/backups/work')
   .then(diff => {
