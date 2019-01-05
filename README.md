@@ -13,9 +13,10 @@ npm install @aminzer/dir-diff
 ```javascript
 const dirDiff = require('dir-diff');
 
-dirDiff('/source', '/target')
+dirDiff('d:/work', 'f:/backups/work')
   .then(diff => {
      console.log('New files and directories:');
+
      diff.added.forEach(entry => {
        console.log(entry.relativePath);
      });
