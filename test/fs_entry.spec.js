@@ -20,8 +20,8 @@ describe('FsEntry', function () {
 
   describe('#isDirectory', function () {
     it('returns boolean opposite to "isFile', function () {
-      expect(new FsEntry({isFile: true}).isDirectory).to.be.false;
-      expect(new FsEntry({isFile: false}).isDirectory).to.be.true;
+      expect(new FsEntry({ isFile: true }).isDirectory).to.be.false;
+      expect(new FsEntry({ isFile: false }).isDirectory).to.be.true;
     });
   });
 });

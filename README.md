@@ -13,14 +13,14 @@ npm install @aminzer/dir-diff
 ```javascript
 const dirDiff = require('@aminzer/dir-diff');
 
-dirDiff('d:/work', 'f:/backups/work')
-  .then(diff => {
-     console.log('New files and directories:');
+dirDiff('d:/work', 'e:/backups/work', {
+  onAddedEntry: ({ absolutePath }) => console.log(`added ${absolutePath}`),
+  onModifiedEntry: ({ absolutePath }) => console.log(`modified ${absolutePath}`),
+  onRemovedEntry: ({ absolutePath }) => console.log(`removed ${absolutePath}`),
+})
+  .then(() => console.log('Directories are compared'))
+  .catch(err => console.log(`Error occurred: ${err.message}`));
 
-     diff.added.forEach(entry => {
-       console.log(entry.relativePath);
-     });
-  });
 ```
 
 ### Description
@@ -31,22 +31,21 @@ dirDiff(sourcePath, targetPath, opts)
 
 ##### Return value
 
-`dirDiff` returns `Promise`. Fulfilled value -`Object` in following format:
-```
-{
-  added: Array,
-  modified: Array,
-  removed: Array
-}
-```
+`dirDiff` returns `Promise`, which become fulfilled when directory comparison is finished.
 
-* `added` - files and directories that are present in source directory, but are absent in target directory.
+##### Parameters
 
-* `modified` - files that are present in both source and target directories but have different content.
+* `sourcePath` (`String`, required) - path to the source directory.
+* `targetPath` (`String`, required) - path to the target directory.
+* `opts` (`Object`, optional) - additional options to pass:
+    * `onAddedEntry` (`function`, `null` by default) - function that is called for files and directories that are present in source directory, but are absent in target directory. `FsEntry` instance is passed as parameter.
+    * `onModifiedEntry` (`function`, `null` by default) - function that is called for files that are present in both source and target directories but have different content. `FsEntry` instance is passed as parameter.
+    * `onRemovedEntry` (`function`, `null` by default) - function that is called for files and directories that are absent in source directory, but are present in target directory. `FsEntry` instance is passed as parameter.
+    * `onEachEntry` (`function`, `null` by default) - function that is called for all files and directories from both source and target directories. `FsEntry` instance is passed as parameter.
+    * `skipContentComparison` (`boolean`, `false` by default) - files are compared by size only. Content comparison is skipped. It speeds up execution by avoiding "expensive" content-comparison process for large amount of data.
+    * `skipExtraIterations` (`boolean`, `false` by default) - child-entries of added/removed directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
 
-* `removed` - files and directories that are absent in source directory, but are present in target directory.
-
-Arrays corresponding to `added`, `modified` and `removed` keys consist of `FsEntry` instances.
+##### FsEntry
 
 `FsEntry` - class representing file or directory. Instance properties:
 
@@ -56,38 +55,3 @@ Arrays corresponding to `added`, `modified` and `removed` keys consist of `FsEnt
 * `size` - size of file in bytes, `0` for directories.
 * `isFile` - `true` if entry is file.
 * `isDirectory` - `true` if entry is directory.
-
-##### Parameters
-
-* `sourcePath` (`String`, required) - path to the source directory.
-* `targetPath` (`String`, required) - path to the target directory.
-* `opts` (`Object`, optional) - additional options to pass:
-    * `skipRemoved` (`boolean`, `false` by default) - removed files/directories are not considered. It speeds up execution by avoiding recursive iteration of target directory.
-    * `skipModified` (`boolean`, `false` by default) - modified files are not considered. It speeds up execution by avoiding file-comparison process.
-    * `skipContentComparison` (`boolean`, `false` by default) - files are compared by size only. Content comparison is skipped. It speeds up execution by avoiding "expensive" content-comparison process for large amount of data.
-    * `skipExtraIterations` (`boolean`, `false` by default) - child-entries of added/removed directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
-    * `onEachEntry` (`function`, `null` by default) - callback that is called on each entry iteration of source and target directories. Iterable `FsEntry` object is passed as parameter.
-    
-### Command Line Tool
-
-##### Installation
-
-```
-npm install -g @aminzer/dir-diff
-```
-
-##### Usage Example
-
-```
-dir-diff --source "d:/work" --target "f:/backups/work"
-```
-
-##### Arguments
-
-* `--source` (`-s`) - path to source directory.
-* `--target` (`-t`) - path to target directory.
-* `--skip-removed` (`-r`) - enable `skipRemoved` option.
-* `--skip-modified` (`-m`) - enable `skipModified` option.
-* `--skip-content-comparison` (`-c`) - enable `skipContentComparison` option.
-* `--skip-extra-iterations` (`-e`) - enable `skipExtraIterations` option.
-* `--trace` - display full stack trace in case of error.

@@ -7,13 +7,13 @@ const iterateDirChildren = require('../lib/iterate_dir_children');
 describe('iterateDirChildren', function () {
   context('when path does not exist', function () {
     it('throws error', function () {
-      expect(iterateDirChildren(__dirname + '/wrong/path', () => {})).to.be.rejected;
+      expect(iterateDirChildren(__dirname + '/wrong/path', new Function())).to.be.rejected;
     });
   });
 
   context('when path corresponds to file', function () {
     it('throws error', function () {
-      expect(iterateDirChildren(__filename, () => {})).to.be.rejected;
+      expect(iterateDirChildren(__filename, new Function())).to.be.rejected;
     });
   });
 
@@ -40,7 +40,7 @@ describe('iterateDirChildren', function () {
     context('when "skipEntryIteration" is called for some directory', function () {
       it('doesn\'t trigger callback for children of that directory', async function () {
         const fsEntries = [];
-        await iterateDirChildren(path, (fsEntry, skipEntryIteration) => {
+        await iterateDirChildren(path, (fsEntry, { skipEntryIteration }) => {
           fsEntries.push(fsEntry);
           if (fsEntry.name === 'subdir2') {
             skipEntryIteration();

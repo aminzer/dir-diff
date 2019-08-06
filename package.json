@@ -4,13 +4,12 @@
   "version": "2.0.4",
   "keywords": [
     "directory",
+    "folder",
     "difference",
-    "comparison"
+    "comparison",
+    "compare"
   ],
   "main": "./lib/dir_diff.js",
-  "bin": {
-    "dir-diff": "./bin/dir_diff.js"
-  },
   "scripts": {
     "test": "mocha test/*.spec.js"
   },
@@ -21,8 +20,6 @@
     "url": "https://github.com/aminzer/dir-diff.git"
   },
   "dependencies": {
-    "command-line-args": "^5.0.2",
-    "single-line-log": "^1.1.2",
     "stream-equal": "^1.1.1"
   },
   "devDependencies": {

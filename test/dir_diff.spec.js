@@ -27,87 +27,91 @@ describe('dirDiff', function () {
     const sourcePath = __dirname + '/resources/source';
     const targetPath = __dirname + '/resources/target';
 
-    const allAddedEntries = filterEntries(expectedSourceEntries, 'added');
-    const allModifiedEntries = filterEntries(expectedSourceEntries, 'modified');
-    const allRemovedEntries = filterEntries(expectedTargetEntries, 'removed');
+    const expectedAddedEntries = expectedSourceEntries.filter(({ name }) => name.includes('added'));
+    const expectedModifiedEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));
+    const expectedRemovedEntries = expectedTargetEntries.filter(({ name }) => name.includes('removed'));
 
     context('when no additional options are passed', function () {
-      it('returns Promise fulfilled with object with all added, modified and removed files/directories', async function () {
-        const diff = await dirDiff(sourcePath, targetPath);
-        const expectedDiff = {
-          added: allAddedEntries,
-          modified: allModifiedEntries,
-          removed: allRemovedEntries
-        };
-
-        expectEqualDiffs(diff, expectedDiff);
-      });
-    });
-
-    context('when "skipRemoved" option is set to true', function () {
-      it('doesn\'t fulfilled with removed files/directories', async function () {
-        const diff = await dirDiff(sourcePath, targetPath, { skipRemoved: true });
-        const expectedDiff = {
-          added: allAddedEntries,
-          modified: allModifiedEntries,
-          removed: []
-        };
-
-        expectEqualDiffs(diff, expectedDiff);
-      });
-    });
-
-    context('when "skipModified" option is set to true', function () {
-      it('doesn\'t fulfilled with modified files', async function () {
-        const diff = await dirDiff(sourcePath, targetPath, { skipModified: true });
-        const expectedDiff = {
-          added: allAddedEntries,
-          modified: [],
-          removed: allRemovedEntries
-        };
-
-        expectEqualDiffs(diff, expectedDiff);
-      });
-    });
-
-    context('when "skipContentComparison" option is set to true', function () {
-      it('doesn\'t fulfilled with modified files with preserved size but changed content', async function () {
-        const diff = await dirDiff(sourcePath, targetPath, { skipContentComparison: true });
-
-        const expectedDiff = {
-          added: allAddedEntries,
-          modified: allModifiedEntries.filter(fsEntry => !fsEntry.name.includes('_modified_content')),
-          removed: allRemovedEntries
-        };
-
-        expectEqualDiffs(diff, expectedDiff);
-      });
-    });
-
-    context('when "skipExtraIterations" option is set to true', function () {
-      it('doesn\'t fulfilled with children of added/removed directories', async function () {
-        const diff = await dirDiff(sourcePath, targetPath, { skipExtraIterations: true });
-
-        const expectedDiff = {
-          added: allAddedEntries.filter(fsEntry => !fsEntry.relativePath.includes('_added/')),
-          modified: allModifiedEntries,
-          removed: allRemovedEntries.filter(fsEntry => !fsEntry.relativePath.includes('_removed/'))
-        };
-
-        expectEqualDiffs(diff, expectedDiff);
+      it('returns fulfilled Promise', async function () {
+        expect(dirDiff(sourcePath, targetPath)).to.be.fulfilled;
       });
     });
 
     context('when "onEachEntry" option is passed', function () {
       it('triggers "onEachEntry" for each file/directory from both source and target directories', async function () {
-        const entriesPassedToCallback = [];
+        const entriesPassedToOnEachEntry = [];
         await dirDiff(sourcePath, targetPath, {
-          onEachEntry: fsEntry => entriesPassedToCallback.push(fsEntry)
+          onEachEntry: fsEntry => entriesPassedToOnEachEntry.push(fsEntry)
         });
 
-        const sourceAndTargetEntries = expectedSourceEntries.slice().concat(expectedTargetEntries);
+        expectEqualEntries(entriesPassedToOnEachEntry, [...expectedSourceEntries, ...expectedTargetEntries]);
+      });
+    });
 
-        expectEqualEntries(entriesPassedToCallback, sourceAndTargetEntries);
+    context('when "onAddedEntry" option is passed', function () {
+      it('triggers "onAddedEntry" for each file/directory that exists in source directory and doesn\'t exist in target directory', async function () {
+        const entriesPassedToOnAddedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onAddedEntry: fsEntry => entriesPassedToOnAddedEntry.push(fsEntry)
+        });
+
+        expectEqualEntries(entriesPassedToOnAddedEntry, expectedAddedEntries);
+      });
+    });
+
+    context('when "onModifiedEntry" option is passed', function () {
+      it('triggers "onModifiedEntry" for each file that exists in both source and target directories, but has different content', async function () {
+        const entriesPassedToOnModifiedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onModifiedEntry: fsEntry => entriesPassedToOnModifiedEntry.push(fsEntry)
+        });
+
+        expectEqualEntries(entriesPassedToOnModifiedEntry, expectedModifiedEntries);
+      });
+    });
+
+    context('when "onRemovedEntry" option is passed', function () {
+      it('triggers "onRemovedEntry" for each file/directory that doesn\'t exist in source directory and exists in target directory', async function () {
+        const entriesPassedToOnRemovedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onRemovedEntry: fsEntry => entriesPassedToOnRemovedEntry.push(fsEntry)
+        });
+
+        expectEqualEntries(entriesPassedToOnRemovedEntry, expectedRemovedEntries);
+      });
+    });
+
+    context('when "skipContentComparison" option is set to true', function () {
+      it('doesn\'t trigger "onModifiedEntry" for files with preserved size but changed content', async function () {
+        const entriesPassedToOnModifiedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onModifiedEntry: fsEntry => entriesPassedToOnModifiedEntry.push(fsEntry),
+          skipContentComparison: true
+        });
+
+        expectEqualEntries(entriesPassedToOnModifiedEntry, expectedModifiedEntries.filter(({ name }) => !name.includes('_modified_content')));
+      });
+    });
+
+    context('when "skipExtraIterations" option is set to true', function () {
+      it('doesn\'t trigger "onAddedEntry" for children of added directories', async function () {
+        const entriesPassedToOnAddedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onAddedEntry: fsEntry => entriesPassedToOnAddedEntry.push(fsEntry),
+          skipExtraIterations: true
+        });
+
+        expectEqualEntries(entriesPassedToOnAddedEntry, expectedAddedEntries.filter(({ relativePath }) => !relativePath.includes('_added/')));
+      });
+
+      it('doesn\'t trigger "onRemovedEntry" for children of removed directories', async function () {
+        const entriesPassedToOnRemovedEntry = [];
+        await dirDiff(sourcePath, targetPath, {
+          onRemovedEntry: fsEntry => entriesPassedToOnRemovedEntry.push(fsEntry),
+          skipExtraIterations: true
+        });
+
+        expectEqualEntries(entriesPassedToOnRemovedEntry, expectedRemovedEntries.filter(({ relativePath }) => !relativePath.includes('_removed/')));
       });
     });
 
@@ -116,15 +120,26 @@ describe('dirDiff', function () {
       const dirPath = sourcePath + '/' + commonName;
       const filePath = targetPath + '/' + commonName;
 
-      it('differs one from another', async function () {
+      it('differs such entries', async function () {
         try {
-          await writeFile(filePath, '');
           await mkdir(dirPath);
+          await writeFile(filePath, '');
 
-          const diff = await dirDiff(sourcePath, targetPath);
+          let addedDir = null;
+          let removedFile = null;
 
-          const addedDir = diff.added.find(fsEntry => fsEntry.name === commonName);
-          const removedFile = diff.removed.find(fsEntry => fsEntry.name === commonName);
+          await dirDiff(sourcePath, targetPath, {
+            onAddedEntry: fsEntry => {
+              if (fsEntry.name === commonName) {
+                addedDir = fsEntry;
+              }
+            },
+            onRemovedEntry: fsEntry => {
+              if (fsEntry.name === commonName) {
+                removedFile = fsEntry;
+              }
+            },
+          });
 
           expect(addedDir).to.be.an.instanceof(FsEntry);
           expect(addedDir.isDirectory).to.be.true;
@@ -133,23 +148,18 @@ describe('dirDiff', function () {
           expect(removedFile.isDirectory).to.be.false;
 
         } finally {
-          try { await unlink(filePath) } catch(e) {}
-          try { await rmdir(dirPath) } catch(e) {}
+          try {
+            await rmdir(dirPath);
+          } catch (err) { }
+
+          try {
+            await unlink(filePath);
+          } catch (err) { }
         }
       });
     });
   });
 });
-
-function filterEntries(fsEntries, type) {
-  return fsEntries.filter(fsEntry => fsEntry.name.includes(type));
-}
-
-function expectEqualDiffs(diff, expectedDiff) {
-  expectEqualEntries(diff.added, expectedDiff.added);
-  expectEqualEntries(diff.modified, expectedDiff.modified);
-  expectEqualEntries(diff.removed, expectedDiff.removed);
-}
 
 function expectEqualEntries(fsEntries, expectedFsEntries) {
   fsEntries.forEach(fsEntry => {

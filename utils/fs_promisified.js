@@ -1,9 +1,11 @@
 const fs = require('fs');
 const { promisify } = require('util');
 
-exports.stat = promisify(fs.stat);
-exports.readdir = promisify(fs.readdir);
-exports.writeFile = promisify(fs.writeFile);
-exports.unlink = promisify(fs.unlink);
-exports.mkdir = promisify(fs.mkdir);
-exports.rmdir = promisify(fs.rmdir);
+module.exports = {
+  mkdir: promisify(fs.mkdir),
+  readdir: promisify(fs.readdir),
+  rmdir: promisify(fs.rmdir),
+  stat: promisify(fs.stat),
+  unlink: promisify(fs.unlink),
+  writeFile: promisify(fs.writeFile)
+};
