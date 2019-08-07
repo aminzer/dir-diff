@@ -55,3 +55,7 @@ dirDiff(sourcePath, targetPath, opts)
 * `size` - size of file in bytes, `0` for directories.
 * `isFile` - `true` if entry is file.
 * `isDirectory` - `true` if entry is directory.
+
+###Command line tool
+
+[@aminzer/dir-diff-cli](https://www.npmjs.com/package/@aminzer/dir-diff-cli)
