@@ -20,7 +20,7 @@
     "url": "https://github.com/aminzer/dir-diff.git"
   },
   "dependencies": {
-    "stream-equal": "^1.1.1"
+    "stream-equal": "^2.0.1"
   },
   "devDependencies": {
     "jest": "^26.6.3"
