@@ -1,29 +1,27 @@
-const { expect } = require('./chai');
+const dirDiff = require('../lib/dir_diff');
+const FsEntry = require('../lib/fs_entry');
 const expectedSourceEntries = require('./resources/source_fs_entries');
 const expectedTargetEntries = require('./resources/target_fs_entries');
 const { writeFile, unlink, mkdir, rmdir } = require('../utils/fs_promisified');
 
-const dirDiff = require('../lib/dir_diff');
-const FsEntry = require('../lib/fs_entry');
-
-describe('dirDiff', function () {
-  context('when at least one path does not exist', function () {
+describe('dirDiff', () => {
+  describe('when at least one path does not exist', () => {
     const wrongPath = __dirname + '/wrong/path';
 
-    it('throws error', function () {
-      expect(dirDiff(wrongPath, __dirname)).to.be.rejected;
-      expect(dirDiff(__dirname, wrongPath)).to.be.rejected;
+    it('throws error', async () => {
+      await expect(dirDiff(wrongPath, __dirname)).rejects.toThrow();
+      await expect(dirDiff(__dirname, wrongPath)).rejects.toThrow();
     });
   });
 
-  context('when at least one path corresponds to file', function () {
-    it('throws error', function () {
-      expect(dirDiff(__filename, __dirname)).to.be.rejected;
-      expect(dirDiff(__dirname, __filename)).to.be.rejected;
+  describe('when at least one path corresponds to file', () => {
+    it('throws error', async () => {
+      await expect(dirDiff(__filename, __dirname)).rejects.toThrow();
+      await expect(dirDiff(__dirname, __filename)).rejects.toThrow();
     });
   });
 
-  context('when both paths corresponds to directories', function () {
+  describe('when both paths corresponds to directories', () => {
     const sourcePath = __dirname + '/resources/source';
     const targetPath = __dirname + '/resources/target';
 
@@ -31,14 +29,14 @@ describe('dirDiff', function () {
     const expectedModifiedEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));
     const expectedRemovedEntries = expectedTargetEntries.filter(({ name }) => name.includes('removed'));
 
-    context('when no additional options are passed', function () {
-      it('returns fulfilled Promise', async function () {
-        expect(dirDiff(sourcePath, targetPath)).to.be.fulfilled;
+    describe('when no additional options are passed', () => {
+      it('returns fulfilled Promise', async () => {
+        await expect(dirDiff(sourcePath, targetPath)).resolves.toBe(undefined);
       });
     });
 
-    context('when "onEachEntry" option is passed', function () {
-      it('triggers "onEachEntry" for each file/directory from both source and target directories', async function () {
+    describe('when "onEachEntry" option is passed', () => {
+      it('triggers "onEachEntry" for each file/directory from both source and target directories', async () => {
         const entriesPassedToOnEachEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onEachEntry: fsEntry => entriesPassedToOnEachEntry.push(fsEntry)
@@ -48,8 +46,8 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when "onAddedEntry" option is passed', function () {
-      it('triggers "onAddedEntry" for each file/directory that exists in source directory and doesn\'t exist in target directory', async function () {
+    describe('when "onAddedEntry" option is passed', () => {
+      it('triggers "onAddedEntry" for each file/directory that exists in source directory and doesn\'t exist in target directory', async () => {
         const entriesPassedToOnAddedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onAddedEntry: fsEntry => entriesPassedToOnAddedEntry.push(fsEntry)
@@ -59,8 +57,8 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when "onModifiedEntry" option is passed', function () {
-      it('triggers "onModifiedEntry" for each file that exists in both source and target directories, but has different content', async function () {
+    describe('when "onModifiedEntry" option is passed', () => {
+      it('triggers "onModifiedEntry" for each file that exists in both source and target directories, but has different content', async () => {
         const entriesPassedToOnModifiedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onModifiedEntry: fsEntry => entriesPassedToOnModifiedEntry.push(fsEntry)
@@ -70,8 +68,8 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when "onRemovedEntry" option is passed', function () {
-      it('triggers "onRemovedEntry" for each file/directory that doesn\'t exist in source directory and exists in target directory', async function () {
+    describe('when "onRemovedEntry" option is passed', () => {
+      it('triggers "onRemovedEntry" for each file/directory that doesn\'t exist in source directory and exists in target directory', async () => {
         const entriesPassedToOnRemovedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onRemovedEntry: fsEntry => entriesPassedToOnRemovedEntry.push(fsEntry)
@@ -81,8 +79,8 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when "skipContentComparison" option is set to true', function () {
-      it('doesn\'t trigger "onModifiedEntry" for files with preserved size but changed content', async function () {
+    describe('when "skipContentComparison" option is set to true', () => {
+      it('doesn\'t trigger "onModifiedEntry" for files with preserved size but changed content', async () => {
         const entriesPassedToOnModifiedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onModifiedEntry: fsEntry => entriesPassedToOnModifiedEntry.push(fsEntry),
@@ -93,8 +91,8 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when "skipExtraIterations" option is set to true', function () {
-      it('doesn\'t trigger "onAddedEntry" for children of added directories', async function () {
+    describe('when "skipExtraIterations" option is set to true', () => {
+      it('doesn\'t trigger "onAddedEntry" for children of added directories', async () => {
         const entriesPassedToOnAddedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onAddedEntry: fsEntry => entriesPassedToOnAddedEntry.push(fsEntry),
@@ -104,7 +102,7 @@ describe('dirDiff', function () {
         expectEqualEntries(entriesPassedToOnAddedEntry, expectedAddedEntries.filter(({ relativePath }) => !relativePath.includes('_added/')));
       });
 
-      it('doesn\'t trigger "onRemovedEntry" for children of removed directories', async function () {
+      it('doesn\'t trigger "onRemovedEntry" for children of removed directories', async () => {
         const entriesPassedToOnRemovedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onRemovedEntry: fsEntry => entriesPassedToOnRemovedEntry.push(fsEntry),
@@ -115,12 +113,12 @@ describe('dirDiff', function () {
       });
     });
 
-    context('when entries have same name but different types (file/directory)', function () {
+    describe('when entries have same name but different types (file/directory)', () => {
       const commonName = 'file_or_dir';
       const dirPath = sourcePath + '/' + commonName;
       const filePath = targetPath + '/' + commonName;
 
-      it('differs such entries', async function () {
+      it('differs such entries', async () => {
         try {
           await mkdir(dirPath);
           await writeFile(filePath, '');
@@ -141,11 +139,11 @@ describe('dirDiff', function () {
             },
           });
 
-          expect(addedDir).to.be.an.instanceof(FsEntry);
-          expect(addedDir.isDirectory).to.be.true;
+          expect(addedDir instanceof FsEntry).toBe(true);
+          expect(addedDir.isDirectory).toBe(true);
 
-          expect(removedFile).to.be.an.instanceof(FsEntry);
-          expect(removedFile.isDirectory).to.be.false;
+          expect(removedFile instanceof FsEntry).toBe(true);
+          expect(removedFile.isDirectory).toBe(false);
 
         } finally {
           try {
@@ -162,9 +160,7 @@ describe('dirDiff', function () {
 });
 
 function expectEqualEntries(fsEntries, expectedFsEntries) {
-  fsEntries.forEach(fsEntry => {
-    expect(fsEntry).to.be.an.instanceof(FsEntry);
-  });
+  expect(fsEntries.every(fsEntry => fsEntry instanceof FsEntry)).toBe(true);
 
-  expect(fsEntries).to.deep.equal(expectedFsEntries);
+  expect(fsEntries).toEqual(expectedFsEntries);
 }

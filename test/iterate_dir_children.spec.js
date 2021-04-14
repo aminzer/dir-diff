@@ -1,44 +1,41 @@
-const { expect } = require('./chai');
-const expectedFsEntries = require('./resources/source_fs_entries');
-
 const FsEntry = require('../lib/fs_entry');
 const iterateDirChildren = require('../lib/iterate_dir_children');
+const expectedFsEntries = require('./resources/source_fs_entries');
 
-describe('iterateDirChildren', function () {
-  context('when path does not exist', function () {
-    it('throws error', function () {
-      expect(iterateDirChildren(__dirname + '/wrong/path', new Function())).to.be.rejected;
+const callback = () => { };
+
+describe('iterateDirChildren', () => {
+  describe('when path does not exist', () => {
+    it('throws error', async () => {
+      await expect(iterateDirChildren(__dirname + '/wrong/path', callback)).rejects.toThrow();
     });
   });
 
-  context('when path corresponds to file', function () {
-    it('throws error', function () {
-      expect(iterateDirChildren(__filename, new Function())).to.be.rejected;
+  describe('when path corresponds to file', () => {
+    it('throws error', async () => {
+      await expect(iterateDirChildren(__filename, callback)).rejects.toThrow();
     });
   });
 
-  context('when callback argument is not a function', function () {
-    it('throws error', function () {
-      expect(iterateDirChildren(__dirname, 'not a function')).to.be.rejected;
+  describe('when callback argument is not a function', () => {
+    it('throws error', async () => {
+      await expect(iterateDirChildren(__dirname, 'not a function')).rejects.toThrow();
     });
   });
 
-  context('when path corresponds to directory', function () {
+  describe('when path corresponds to directory', () => {
     const path = __dirname + '/resources/source';
 
-    it('triggers callback for each file/directory in source directory tree', async function () {
+    it('triggers callback for each file/directory in source directory tree', async () => {
       const fsEntries = [];
       await iterateDirChildren(path, fsEntry => fsEntries.push(fsEntry));
 
-      fsEntries.forEach(fsEntry => {
-        expect(fsEntry).to.be.an.instanceof(FsEntry);
-      });
-
-      expect(fsEntries).to.deep.equal(expectedFsEntries);
+      expect(fsEntries.every(fsEntry => fsEntry instanceof FsEntry)).toBe(true);
+      expect(fsEntries).toEqual(expectedFsEntries);
     });
 
-    context('when "skipEntryIteration" is called for some directory', function () {
-      it('doesn\'t trigger callback for children of that directory', async function () {
+    describe('when "skipEntryIteration" is called for some directory', () => {
+      it('doesn\'t trigger callback for children of that directory', async () => {
         const fsEntries = [];
         await iterateDirChildren(path, (fsEntry, { skipEntryIteration }) => {
           fsEntries.push(fsEntry);
@@ -51,7 +48,7 @@ describe('iterateDirChildren', function () {
           return !fsEntry.relativePath.startsWith('subdir2/');
         });
 
-        expect(fsEntries).to.deep.equal(expectedEntries);
+        expect(fsEntries).toEqual(expectedEntries);
       });
     });
   });

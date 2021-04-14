@@ -1,9 +1,8 @@
-const { expect } = require('./chai');
 const FsEntry = require('../lib/fs_entry');
 
-describe('FsEntry', function () {
-  describe('#constructor', function () {
-    it('initializes instance with correct params', function () {
+describe('FsEntry', () => {
+  describe('#constructor', () => {
+    it('initializes instance with correct params', () => {
       const opts = {
         name: 'name',
         absolutePath: '/absolute/path',
@@ -14,14 +13,14 @@ describe('FsEntry', function () {
 
       const fsEntry = new FsEntry(opts);
 
-      expect(fsEntry).to.deep.eq(opts);
+      expect(fsEntry).toEqual(opts);
     });
   });
 
-  describe('#isDirectory', function () {
-    it('returns boolean opposite to "isFile', function () {
-      expect(new FsEntry({ isFile: true }).isDirectory).to.be.false;
-      expect(new FsEntry({ isFile: false }).isDirectory).to.be.true;
+  describe('#isDirectory', () => {
+    it('returns boolean opposite to "isFile', () => {
+      expect(new FsEntry({ isFile: true }).isDirectory).toBe(false);
+      expect(new FsEntry({ isFile: false }).isDirectory).toBe(true);
     });
   });
 });
