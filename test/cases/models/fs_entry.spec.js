@@ -1,4 +1,4 @@
-const { FsEntry } = require('../../src/models');
+const { FsEntry } = require('../../../src/models');
 
 describe('FsEntry', () => {
   describe('#constructor', () => {

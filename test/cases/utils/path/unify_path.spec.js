@@ -1,4 +1,4 @@
-const { unifyPath } = require('../../src/utils/path');
+const { unifyPath } = require('../../../../src/utils/path');
 
 describe('unifyPath', () => {
   const forwardSlashDirPath = 'c:/some/path';
