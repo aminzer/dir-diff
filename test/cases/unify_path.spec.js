@@ -1,8 +1,8 @@
 const { unifyPath } = require('../../src/utils/path');
 
-describe('resolvePath', () => {
-  const forwardSlashDirPath = __dirname.replace(/\\/g, '/');
-  const backSlashDirPath = __dirname.replace(/\//g, '\\');
+describe('unifyPath', () => {
+  const forwardSlashDirPath = 'c:/some/path';
+  const backSlashDirPath = 'c:\\some\\path';
 
   it('replaces backslashes with forward slashes', () => {
     expect(unifyPath(backSlashDirPath)).toBe(forwardSlashDirPath);
