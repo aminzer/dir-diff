@@ -3,7 +3,7 @@ const { isDirExist } = require('../../../../src/utils/fs');
 describe('dirExist', () => {
   describe('when path does not exist', () => {
     it('returns false', async () => {
-      expect(await isDirExist(`${__dirname}/wrong/path`)).toBe(false);
+      expect(await isDirExist(`${__dirname}/invalid/path`)).toBe(false);
     });
   });
 

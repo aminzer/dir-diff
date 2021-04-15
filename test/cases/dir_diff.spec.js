@@ -18,12 +18,47 @@ function expectEqualEntries(fsEntries, expectedFsEntries) {
 }
 
 describe('dirDiff', () => {
-  describe('when at least one path does not exist', () => {
-    const wrongPath = `${__dirname}/wrong/path`;
+  describe('when source path does not exist', () => {
+    const sourcePath = path.join(__dirname, '/invalid/path');
+    const targetPath = __dirname;
 
     it('throws error', async () => {
-      await expect(dirDiff(wrongPath, __dirname)).rejects.toThrow();
-      await expect(dirDiff(__dirname, wrongPath)).rejects.toThrow();
+      await expect(dirDiff(sourcePath, targetPath))
+        .rejects
+        .toThrow(`Source directory "${sourcePath}" does not exist`);
+    });
+  });
+
+  describe('when target path does not exist', () => {
+    const sourcePath = __dirname;
+    const targetPath = path.join(__dirname, '/invalid/path');
+
+    it('throws error', async () => {
+      await expect(dirDiff(sourcePath, targetPath))
+        .rejects
+        .toThrow(`Target directory "${targetPath}" does not exist`);
+    });
+  });
+
+  describe('when source path corresponds to a file', () => {
+    const sourcePath = __filename;
+    const targetPath = __dirname;
+
+    it('throws error', async () => {
+      await expect(dirDiff(sourcePath, targetPath))
+        .rejects
+        .toThrow(`Source directory "${sourcePath}" does not exist`);
+    });
+  });
+
+  describe('when target path corresponds to a file', () => {
+    const sourcePath = __dirname;
+    const targetPath = __filename;
+
+    it('throws error', async () => {
+      await expect(dirDiff(sourcePath, targetPath))
+        .rejects
+        .toThrow(`Target directory "${targetPath}" does not exist`);
     });
   });
 
