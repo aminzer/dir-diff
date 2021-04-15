@@ -1,4 +1,4 @@
-const { unifyPath } = require('../../src/utils/path');
+const path = require('path');
 
 module.exports = [{
   relativePath: 'file3.txt', name: 'file3.txt', isFile: true, size: 0,
@@ -28,5 +28,6 @@ module.exports = [{
   relativePath: 'subdir3_removed/file31_removed.txt', name: 'file31_removed.txt', isFile: true, size: 0,
 }].map((fsEntry) => ({
   ...fsEntry,
-  absolutePath: unifyPath(`${__dirname}/target/${fsEntry.relativePath}`),
+  relativePath: path.join(fsEntry.relativePath),
+  absolutePath: path.join(__dirname, 'target', fsEntry.relativePath),
 }));

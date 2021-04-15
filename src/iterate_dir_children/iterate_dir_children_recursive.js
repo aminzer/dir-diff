@@ -1,3 +1,4 @@
+const path = require('path');
 const { FsEntry } = require('../models');
 const { iterateInSeries } = require('../utils/array');
 const { stat, readdir } = require('../utils/fs');
@@ -6,8 +7,8 @@ async function iterateDirChildrenRecursive(absoluteDirPath, relativeDirPath, onE
   const entries = await readdir(absoluteDirPath);
 
   await iterateInSeries(entries, async (name) => {
-    const absolutePath = `${absoluteDirPath}/${name}`;
-    const relativePath = relativeDirPath ? `${relativeDirPath}/${name}` : name;
+    const absolutePath = path.join(absoluteDirPath, name);
+    const relativePath = relativeDirPath ? path.join(relativeDirPath, name) : name;
 
     const stats = await stat(absolutePath);
     const fsEntry = new FsEntry({

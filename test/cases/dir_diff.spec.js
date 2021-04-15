@@ -19,7 +19,7 @@ function expectEqualEntries(fsEntries, expectedFsEntries) {
 
 describe('dirDiff', () => {
   describe('when source path does not exist', () => {
-    const sourcePath = path.join(__dirname, '/invalid/path');
+    const sourcePath = path.join(__dirname, 'invalid', 'path');
     const targetPath = __dirname;
 
     it('throws error', async () => {
@@ -31,7 +31,7 @@ describe('dirDiff', () => {
 
   describe('when target path does not exist', () => {
     const sourcePath = __dirname;
-    const targetPath = path.join(__dirname, '/invalid/path');
+    const targetPath = path.join(__dirname, 'invalid', 'path');
 
     it('throws error', async () => {
       await expect(dirDiff(sourcePath, targetPath))
@@ -62,16 +62,9 @@ describe('dirDiff', () => {
     });
   });
 
-  describe('when at least one path corresponds to file', () => {
-    it('throws error', async () => {
-      await expect(dirDiff(__filename, __dirname)).rejects.toThrow();
-      await expect(dirDiff(__dirname, __filename)).rejects.toThrow();
-    });
-  });
-
   describe('when both paths corresponds to directories', () => {
-    const sourcePath = path.resolve(`${__dirname}/../resources/source`);
-    const targetPath = path.resolve(`${__dirname}/../resources/target`);
+    const sourcePath = path.resolve(__dirname, '..', 'resources', 'source');
+    const targetPath = path.resolve(__dirname, '..', 'resources', 'target');
 
     const expectedAddedEntries = expectedSourceEntries.filter(({ name }) => name.includes('added'));
     const expectedModifiedEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));
@@ -84,7 +77,7 @@ describe('dirDiff', () => {
     });
 
     describe('when "onEachEntry" option is passed', () => {
-      it('triggers "onEachEntry" for each file/directory from both source and target directories', async () => {
+      it('triggers "onEachEntry" for each file and directory from both source and target directories', async () => {
         const entriesPassedToOnEachEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onEachEntry: (fsEntry) => entriesPassedToOnEachEntry.push(fsEntry),
@@ -98,7 +91,7 @@ describe('dirDiff', () => {
     });
 
     describe('when "onAddedEntry" option is passed', () => {
-      it('triggers "onAddedEntry" for each file/directory that exists in source directory and doesn\'t exist in target directory', async () => {
+      it('triggers "onAddedEntry" for each file and directory that exists in source directory and doesn\'t exist in target directory', async () => {
         const entriesPassedToOnAddedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onAddedEntry: (fsEntry) => entriesPassedToOnAddedEntry.push(fsEntry),
@@ -120,7 +113,7 @@ describe('dirDiff', () => {
     });
 
     describe('when "onRemovedEntry" option is passed', () => {
-      it('triggers "onRemovedEntry" for each file/directory that doesn\'t exist in source directory and exists in target directory', async () => {
+      it('triggers "onRemovedEntry" for each file and directory that doesn\'t exist in source directory and exists in target directory', async () => {
         const entriesPassedToOnRemovedEntry = [];
         await dirDiff(sourcePath, targetPath, {
           onRemovedEntry: (fsEntry) => entriesPassedToOnRemovedEntry.push(fsEntry),
@@ -138,7 +131,9 @@ describe('dirDiff', () => {
           skipContentComparison: true,
         });
 
-        expectEqualEntries(entriesPassedToOnModifiedEntry, expectedModifiedEntries.filter(({ name }) => !name.includes('_modified_content')));
+        const expectedEntries = expectedModifiedEntries.filter(({ name }) => !name.includes('_modified_content'));
+
+        expectEqualEntries(entriesPassedToOnModifiedEntry, expectedEntries);
       });
     });
 
@@ -150,7 +145,12 @@ describe('dirDiff', () => {
           skipExtraIterations: true,
         });
 
-        expectEqualEntries(entriesPassedToOnAddedEntry, expectedAddedEntries.filter(({ relativePath }) => !relativePath.includes('_added/')));
+        const pathPartToSkip = path.join('_added', '/');
+        const expectedEntries = expectedAddedEntries.filter(({ relativePath }) => (
+          !relativePath.includes(pathPartToSkip)
+        ));
+
+        expectEqualEntries(entriesPassedToOnAddedEntry, expectedEntries);
       });
 
       it('doesn\'t trigger "onRemovedEntry" for children of removed directories', async () => {
@@ -160,14 +160,19 @@ describe('dirDiff', () => {
           skipExtraIterations: true,
         });
 
-        expectEqualEntries(entriesPassedToOnRemovedEntry, expectedRemovedEntries.filter(({ relativePath }) => !relativePath.includes('_removed/')));
+        const pathPartToSkip = path.join('_removed', '/');
+        const expectedEntries = expectedRemovedEntries.filter(({ relativePath }) => (
+          !relativePath.includes(pathPartToSkip)
+        ));
+
+        expectEqualEntries(entriesPassedToOnRemovedEntry, expectedEntries);
       });
     });
 
-    describe('when entries have same name but different types (file/directory)', () => {
+    describe('when entries have same name but different types (file or directory)', () => {
       const commonName = 'file_or_dir';
-      const dirPath = `${sourcePath}/${commonName}`;
-      const filePath = `${targetPath}/${commonName}`;
+      const dirPath = path.join(sourcePath, commonName);
+      const filePath = path.join(targetPath, commonName);
 
       it('differs such entries', async () => {
         try {

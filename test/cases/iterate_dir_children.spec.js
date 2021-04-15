@@ -1,14 +1,13 @@
 const path = require('path');
 const iterateDirChildren = require('../../src/iterate_dir_children');
 const { FsEntry } = require('../../src/models');
-const { unifyPath } = require('../../src/utils/path');
 const expectedFsEntries = require('../resources/source_fs_entries');
 
 const callback = () => { };
 
 describe('iterateDirChildren', () => {
   describe('when path does not exist', () => {
-    const invalidDirPath = unifyPath(`${__dirname}/invalid/path`);
+    const invalidDirPath = path.join(__dirname, 'invalid', 'path');
 
     it('throws error', async () => {
       await expect(iterateDirChildren(invalidDirPath, callback))
@@ -18,7 +17,7 @@ describe('iterateDirChildren', () => {
   });
 
   describe('when path corresponds to file', () => {
-    const filePath = unifyPath(__filename);
+    const filePath = path.join(__filename);
 
     it('throws error', async () => {
       await expect(iterateDirChildren(filePath, callback))
@@ -36,9 +35,9 @@ describe('iterateDirChildren', () => {
   });
 
   describe('when path corresponds to directory', () => {
-    const dirPath = path.resolve(`${__dirname}/../resources/source`);
+    const dirPath = path.resolve(__dirname, '..', 'resources', 'source');
 
-    it('triggers callback for each file/directory in source directory tree', async () => {
+    it('triggers callback for each file and directory in source directory tree', async () => {
       const fsEntries = [];
       await iterateDirChildren(dirPath, (fsEntry) => fsEntries.push(fsEntry));
 
@@ -56,7 +55,10 @@ describe('iterateDirChildren', () => {
           }
         });
 
-        const expectedEntries = expectedFsEntries.filter((fsEntry) => !fsEntry.relativePath.startsWith('subdir2/'));
+        const pathPartToSkip = path.join('subdir2', '/');
+        const expectedEntries = expectedFsEntries.filter(({ relativePath }) => (
+          !relativePath.includes(pathPartToSkip)
+        ));
 
         expect(fsEntries).toEqual(expectedEntries);
       });
