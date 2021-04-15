@@ -1,4 +1,4 @@
-const unifyPath = require('../lib/unify_path');
+const { unifyPath } = require('../../src/utils/path');
 
 describe('resolvePath', () => {
   const forwardSlashDirPath = __dirname.replace(/\\/g, '/');
@@ -9,6 +9,6 @@ describe('resolvePath', () => {
   });
 
   it('removes trailing slash', () => {
-    expect(unifyPath(forwardSlashDirPath + '/')).toBe(forwardSlashDirPath);
+    expect(unifyPath(`${forwardSlashDirPath}/`)).toBe(forwardSlashDirPath);
   });
 });

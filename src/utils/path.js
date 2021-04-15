@@ -1,7 +1,9 @@
-function resolvePath(path) {
+function unifyPath(path) {
   return path
     .replace(/\\/g, '/')
     .replace(/\/$/, '');
 }
 
-module.exports = resolvePath;
+module.exports = {
+  unifyPath,
+};

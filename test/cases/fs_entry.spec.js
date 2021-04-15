@@ -1,4 +1,4 @@
-const FsEntry = require('../lib/fs_entry');
+const { FsEntry } = require('../../src/models');
 
 describe('FsEntry', () => {
   describe('#constructor', () => {
@@ -8,7 +8,7 @@ describe('FsEntry', () => {
         absolutePath: '/absolute/path',
         relativePath: 'path',
         isFile: true,
-        size: 32
+        size: 32,
       };
 
       const fsEntry = new FsEntry(opts);
