@@ -63,8 +63,8 @@ describe('dirDiff', () => {
   });
 
   describe('when both paths corresponds to directories', () => {
-    const sourcePath = path.resolve(__dirname, '..', 'resources', 'source');
-    const targetPath = path.resolve(__dirname, '..', 'resources', 'target');
+    const sourcePath = path.join(__dirname, '..', 'resources', 'source');
+    const targetPath = path.join(__dirname, '..', 'resources', 'target');
 
     const expectedAddedEntries = expectedSourceEntries.filter(({ name }) => name.includes('added'));
     const expectedModifiedEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));

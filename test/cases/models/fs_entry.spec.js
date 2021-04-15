@@ -1,3 +1,4 @@
+const path = require('path');
 const { FsEntry } = require('../../../src/models');
 
 describe('FsEntry', () => {
@@ -5,8 +6,8 @@ describe('FsEntry', () => {
     it('initializes instance with correct params', () => {
       const opts = {
         name: 'name',
-        absolutePath: '/absolute/path',
-        relativePath: 'path',
+        absolutePath: path.resolve('some', 'path'),
+        relativePath: path.join('some', 'path'),
         isFile: true,
         size: 32,
       };

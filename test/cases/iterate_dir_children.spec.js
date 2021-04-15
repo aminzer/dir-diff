@@ -35,7 +35,7 @@ describe('iterateDirChildren', () => {
   });
 
   describe('when path corresponds to directory', () => {
-    const dirPath = path.resolve(__dirname, '..', 'resources', 'source');
+    const dirPath = path.join(__dirname, '..', 'resources', 'source');
 
     it('triggers callback for each file and directory in source directory tree', async () => {
       const fsEntries = [];

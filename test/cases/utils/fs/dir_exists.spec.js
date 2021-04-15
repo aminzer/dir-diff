@@ -1,21 +1,28 @@
+const path = require('path');
 const { isDirExist } = require('../../../../src/utils/fs');
 
 describe('dirExist', () => {
   describe('when path does not exist', () => {
+    const invalidPath = path.join(__dirname, 'invalid', 'path');
+
     it('returns false', async () => {
-      expect(await isDirExist(`${__dirname}/invalid/path`)).toBe(false);
+      expect(await isDirExist(invalidPath)).toBe(false);
     });
   });
 
   describe('when path corresponds to file', () => {
+    const filePath = __filename;
+
     it('returns false', async () => {
-      expect(await isDirExist(__filename)).toBe(false);
+      expect(await isDirExist(filePath)).toBe(false);
     });
   });
 
   describe('when path corresponds to directory', () => {
+    const dirPath = __dirname;
+
     it('returns true', async () => {
-      expect(await isDirExist(__dirname)).toBe(true);
+      expect(await isDirExist(dirPath)).toBe(true);
     });
   });
 });
