@@ -9,8 +9,8 @@ const {
 } = require('../../src/utils/fs');
 const { invertPathSeparators } = require('../utils/path');
 
-const expectedSourceEntries = require('../resources/source_fs_entries');
-const expectedTargetEntries = require('../resources/target_fs_entries');
+const expectedSourceEntries = require('../resources/common/source_fs_entries');
+const expectedTargetEntries = require('../resources/common/target_fs_entries');
 
 function expectEqualEntries(fsEntries, expectedFsEntries) {
   expect(fsEntries.every((fsEntry) => fsEntry instanceof FsEntry)).toBe(true);
@@ -20,7 +20,7 @@ function expectEqualEntries(fsEntries, expectedFsEntries) {
 
 describe('dirDiff', () => {
   describe('when source path does not exist', () => {
-    const sourcePath = path.join(__dirname, 'invalid', 'path');
+    const sourcePath = path.join(__dirname, 'invalid/path');
     const targetPath = __dirname;
 
     it('throws error', async () => {
@@ -32,7 +32,7 @@ describe('dirDiff', () => {
 
   describe('when target path does not exist', () => {
     const sourcePath = __dirname;
-    const targetPath = path.join(__dirname, 'invalid', 'path');
+    const targetPath = path.join(__dirname, 'invalid/path');
 
     it('throws error', async () => {
       await expect(dirDiff(sourcePath, targetPath))
@@ -64,8 +64,8 @@ describe('dirDiff', () => {
   });
 
   describe('when both paths corresponds to directories', () => {
-    const sourcePath = path.join(__dirname, '..', 'resources', 'source');
-    const targetPath = path.join(__dirname, '..', 'resources', 'target');
+    const sourcePath = path.join(__dirname, '../resources/common/source');
+    const targetPath = path.join(__dirname, '../resources/common/target');
 
     const expectedAddedEntries = expectedSourceEntries.filter(({ name }) => name.includes('added'));
     const expectedModifiedEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));

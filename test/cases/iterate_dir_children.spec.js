@@ -1,13 +1,13 @@
 const path = require('path');
 const iterateDirChildren = require('../../src/iterate_dir_children');
 const { FsEntry } = require('../../src/models');
-const expectedFsEntries = require('../resources/source_fs_entries');
+const expectedFsEntries = require('../resources/common/source_fs_entries');
 
 const callback = () => { };
 
 describe('iterateDirChildren', () => {
   describe('when path does not exist', () => {
-    const invalidDirPath = path.join(__dirname, 'invalid', 'path');
+    const invalidDirPath = path.join(__dirname, 'invalid/path');
 
     it('throws error', async () => {
       await expect(iterateDirChildren(invalidDirPath, callback))
@@ -17,7 +17,7 @@ describe('iterateDirChildren', () => {
   });
 
   describe('when path corresponds to file', () => {
-    const filePath = path.join(__filename);
+    const filePath = __filename;
 
     it('throws error', async () => {
       await expect(iterateDirChildren(filePath, callback))
@@ -35,7 +35,7 @@ describe('iterateDirChildren', () => {
   });
 
   describe('when path corresponds to directory', () => {
-    const dirPath = path.join(__dirname, '..', 'resources', 'source');
+    const dirPath = path.join(__dirname, '../resources/common/source');
 
     it('triggers callback for each file and directory in source directory tree', async () => {
       const fsEntries = [];
@@ -55,7 +55,7 @@ describe('iterateDirChildren', () => {
           }
         });
 
-        const pathPartToSkip = path.join('subdir2', '/');
+        const pathPartToSkip = path.join('subdir2/');
         const expectedEntries = expectedFsEntries.filter(({ relativePath }) => (
           !relativePath.includes(pathPartToSkip)
         ));
