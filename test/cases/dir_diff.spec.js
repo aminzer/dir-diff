@@ -1,8 +1,6 @@
 const path = require('path');
 const dirDiff = require('../../src');
 const { FsEntry } = require('../../src/models');
-const { invertPathSeparators } = require('../utils/path');
-
 const expectedSourceEntries = require('../resources/common/source_fs_entries');
 const expectedTargetEntries = require('../resources/common/target_fs_entries');
 
@@ -206,14 +204,13 @@ describe('dirDiff', () => {
       });
     });
 
-    describe('when paths contain not system-specific path separators', () => {
-      const sourcePathWithInvertedSeparators = invertPathSeparators(sourcePath);
-      const targetPathWithInvertedSeparators = invertPathSeparators(targetPath);
+    describe('when "/" is used as path separator in path arguments', () => {
+      const replaceSeparators = (thePath) => thePath.replace(/\//g, path.sep);
 
-      it('triggers callbacks with system-specific path separators fs entries', async () => {
+      it('triggers callbacks with platform-specific path separator', async () => {
         const entriesPassedToOnEachEntry = [];
 
-        await dirDiff(sourcePathWithInvertedSeparators, targetPathWithInvertedSeparators, {
+        await dirDiff(replaceSeparators(sourcePath), replaceSeparators(targetPath), {
           onEachEntry: (fsEntry) => entriesPassedToOnEachEntry.push(fsEntry),
         });
 

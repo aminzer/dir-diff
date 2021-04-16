@@ -1,5 +1,7 @@
 const path = require('path');
 
+const separator = path.sep;
+
 module.exports = [{
   relativePath: '.dot_file_added', name: '.dot_file_added', isFile: true, size: 0,
 }, {
@@ -15,29 +17,28 @@ module.exports = [{
 }, {
   relativePath: 'subdir1_added', name: 'subdir1_added', isFile: false, size: 0,
 }, {
-  relativePath: 'subdir1_added/file11_added.txt', name: 'file11_added.txt', isFile: true, size: 0,
+  relativePath: `subdir1_added${separator}file11_added.txt`, name: 'file11_added.txt', isFile: true, size: 0,
 }, {
   relativePath: 'subdir2', name: 'subdir2', isFile: false, size: 0,
 }, {
-  relativePath: 'subdir2/file21.txt', name: 'file21.txt', isFile: true, size: 0,
+  relativePath: `subdir2${separator}file21.txt`, name: 'file21.txt', isFile: true, size: 0,
 }, {
-  relativePath: 'subdir2/file22_added.txt', name: 'file22_added.txt', isFile: true, size: 0,
+  relativePath: `subdir2${separator}file22_added.txt`, name: 'file22_added.txt', isFile: true, size: 0,
 }, {
-  relativePath: 'subdir2/file23_modified_size.txt', name: 'file23_modified_size.txt', isFile: true, size: 23,
+  relativePath: `subdir2${separator}file23_modified_size.txt`, name: 'file23_modified_size.txt', isFile: true, size: 23,
 }, {
-  relativePath: 'subdir2/subdir21', name: 'subdir21', isFile: false, size: 0,
+  relativePath: `subdir2${separator}subdir21`, name: 'subdir21', isFile: false, size: 0,
 }, {
-  relativePath: 'subdir2/subdir21/file211.txt', name: 'file211.txt', isFile: true, size: 0,
+  relativePath: `subdir2${separator}subdir21${separator}file211.txt`, name: 'file211.txt', isFile: true, size: 0,
 }, {
-  relativePath: 'subdir2/subdir21/file212_added.txt', name: 'file212_added.txt', isFile: true, size: 0,
+  relativePath: `subdir2${separator}subdir21${separator}file212_added.txt`, name: 'file212_added.txt', isFile: true, size: 0,
 }, {
-  relativePath: 'subdir2/subdir21/file213_modified_content.txt', name: 'file213_modified_content.txt', isFile: true, size: 44,
+  relativePath: `subdir2${separator}subdir21${separator}file213_modified_content.txt`, name: 'file213_modified_content.txt', isFile: true, size: 44,
 }, {
-  relativePath: 'subdir2/subdir22_added', name: 'subdir22_added', isFile: false, size: 0,
+  relativePath: `subdir2${separator}subdir22_added`, name: 'subdir22_added', isFile: false, size: 0,
 }, {
-  relativePath: 'subdir2/subdir22_added/file221_added.txt', name: 'file221_added.txt', isFile: true, size: 0,
+  relativePath: `subdir2${separator}subdir22_added${separator}file221_added.txt`, name: 'file221_added.txt', isFile: true, size: 0,
 }].map((fsEntry) => ({
   ...fsEntry,
-  relativePath: path.join(fsEntry.relativePath),
   absolutePath: path.join(__dirname, 'source', fsEntry.relativePath),
 }));
