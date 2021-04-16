@@ -1,12 +1,6 @@
 const path = require('path');
 const dirDiff = require('../../src');
 const { FsEntry } = require('../../src/models');
-const {
-  writeFile,
-  unlink,
-  mkdir,
-  rmdir,
-} = require('../../src/utils/fs');
 const { invertPathSeparators } = require('../utils/path');
 
 const expectedSourceEntries = require('../resources/common/source_fs_entries');
@@ -152,7 +146,7 @@ describe('dirDiff', () => {
           skipExtraIterations: true,
         });
 
-        const pathPartToSkip = path.join('_added', '/');
+        const pathPartToSkip = path.join('_added/');
         const expectedEntries = expectedAddedEntries.filter(({ relativePath }) => (
           !relativePath.includes(pathPartToSkip)
         ));
@@ -168,7 +162,7 @@ describe('dirDiff', () => {
           skipExtraIterations: true,
         });
 
-        const pathPartToSkip = path.join('_removed', '/');
+        const pathPartToSkip = path.join('_removed/');
         const expectedEntries = expectedRemovedEntries.filter(({ relativePath }) => (
           !relativePath.includes(pathPartToSkip)
         ));
@@ -178,49 +172,37 @@ describe('dirDiff', () => {
     });
 
     describe('when entries have same name but different types (file or directory)', () => {
-      const commonName = 'file_or_dir';
-      const dirPath = path.join(sourcePath, commonName);
-      const filePath = path.join(targetPath, commonName);
+      const commonName = 'file_or_dir.txt';
+      const sourcePathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/source');
+      const targetPathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/target');
 
       it('differs such entries', async () => {
-        try {
-          await mkdir(dirPath);
-          await writeFile(filePath, '');
+        const entriesPassedToOnAddedEntry = [];
+        const entriesPassedToOnRemovedEntry = [];
 
-          let addedDir = null;
-          let removedFile = null;
+        await dirDiff(sourcePathForCurrentCase, targetPathForCurrentCase, {
+          onAddedEntry: (fsEntry) => entriesPassedToOnAddedEntry.push(fsEntry),
+          onRemovedEntry: (fsEntry) => entriesPassedToOnRemovedEntry.push(fsEntry),
+          skipExtraIterations: true,
+        });
 
-          await dirDiff(sourcePath, targetPath, {
-            onAddedEntry: (fsEntry) => {
-              if (fsEntry.name === commonName) {
-                addedDir = fsEntry;
-              }
-            },
-            onRemovedEntry: (fsEntry) => {
-              if (fsEntry.name === commonName) {
-                removedFile = fsEntry;
-              }
-            },
-          });
+        expect(entriesPassedToOnAddedEntry.length).toBe(1);
+        expect(entriesPassedToOnAddedEntry[0]).toEqual({
+          name: commonName,
+          absolutePath: path.join(sourcePathForCurrentCase, commonName),
+          relativePath: commonName,
+          isFile: false,
+          size: 0,
+        });
 
-          expect(addedDir instanceof FsEntry).toBe(true);
-          expect(addedDir.isDirectory).toBe(true);
-
-          expect(removedFile instanceof FsEntry).toBe(true);
-          expect(removedFile.isDirectory).toBe(false);
-        } finally {
-          try {
-            await rmdir(dirPath);
-          } catch (err) {
-            // failed to remove temp dir
-          }
-
-          try {
-            await unlink(filePath);
-          } catch (err) {
-            // failed to remove temp file
-          }
-        }
+        expect(entriesPassedToOnRemovedEntry.length).toBe(1);
+        expect(entriesPassedToOnRemovedEntry[0]).toEqual({
+          name: commonName,
+          absolutePath: path.join(targetPathForCurrentCase, commonName),
+          relativePath: commonName,
+          isFile: true,
+          size: 0,
+        });
       });
     });
 

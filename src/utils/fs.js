@@ -2,12 +2,8 @@ const fs = require('fs');
 const util = require('util');
 const streamEqual = require('stream-equal');
 
-const mkdir = util.promisify(fs.mkdir);
 const readdir = util.promisify(fs.readdir);
-const rmdir = util.promisify(fs.rmdir);
 const stat = util.promisify(fs.stat);
-const unlink = util.promisify(fs.unlink);
-const writeFile = util.promisify(fs.writeFile);
 
 async function isDirExist(path) {
   try {
@@ -28,10 +24,6 @@ async function isContentEqual(fileEntry1, fileEntry2) {
 module.exports = {
   isDirExist,
   isContentEqual,
-  mkdir,
   readdir,
-  rmdir,
   stat,
-  unlink,
-  writeFile,
 };
