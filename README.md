@@ -38,9 +38,9 @@ dirDiff(sourcePath, targetPath, opts)
 * `sourcePath` (`String`, required) - path to the source directory.
 * `targetPath` (`String`, required) - path to the target directory.
 * `opts` (`Object`, optional) - additional options to pass:
-    * `onAddedEntry` (`function`, `null` by default) - function that is called for files and directories that are present in source directory, but are absent in target directory. `FsEntry` instance is passed as parameter.
+    * `onAddedEntry` (`function`, `null` by default) - function that is called for files and directories that are present in source directory, but are missing in target directory. `FsEntry` instance is passed as parameter.
     * `onModifiedEntry` (`function`, `null` by default) - function that is called for files that are present in both source and target directories but have different content. `FsEntry` instance is passed as parameter.
-    * `onRemovedEntry` (`function`, `null` by default) - function that is called for files and directories that are absent in source directory, but are present in target directory. `FsEntry` instance is passed as parameter.
+    * `onRemovedEntry` (`function`, `null` by default) - function that is called for files and directories that are missing in source directory, but are present in target directory. `FsEntry` instance is passed as parameter.
     * `onEachEntry` (`function`, `null` by default) - function that is called for all files and directories from both source and target directories. `FsEntry` instance is passed as parameter.
     * `skipContentComparison` (`boolean`, `false` by default) - files are compared by size only. Content comparison is skipped. It speeds up execution by avoiding "expensive" content-comparison process for large amount of data.
     * `skipExtraIterations` (`boolean`, `false` by default) - child-entries of added/removed directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
