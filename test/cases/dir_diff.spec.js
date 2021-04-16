@@ -7,6 +7,7 @@ const {
   mkdir,
   rmdir,
 } = require('../../src/utils/fs');
+const { invertPathSeparators } = require('../utils/path');
 
 const expectedSourceEntries = require('../resources/source_fs_entries');
 const expectedTargetEntries = require('../resources/target_fs_entries');
@@ -79,6 +80,7 @@ describe('dirDiff', () => {
     describe('when "onEachEntry" option is passed', () => {
       it('triggers "onEachEntry" for each file and directory from both source and target directories', async () => {
         const entriesPassedToOnEachEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onEachEntry: (fsEntry) => entriesPassedToOnEachEntry.push(fsEntry),
         });
@@ -93,6 +95,7 @@ describe('dirDiff', () => {
     describe('when "onAddedEntry" option is passed', () => {
       it('triggers "onAddedEntry" for each file and directory that exists in source directory and doesn\'t exist in target directory', async () => {
         const entriesPassedToOnAddedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onAddedEntry: (fsEntry) => entriesPassedToOnAddedEntry.push(fsEntry),
         });
@@ -104,6 +107,7 @@ describe('dirDiff', () => {
     describe('when "onModifiedEntry" option is passed', () => {
       it('triggers "onModifiedEntry" for each file that exists in both source and target directories, but has different content', async () => {
         const entriesPassedToOnModifiedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onModifiedEntry: (fsEntry) => entriesPassedToOnModifiedEntry.push(fsEntry),
         });
@@ -115,6 +119,7 @@ describe('dirDiff', () => {
     describe('when "onRemovedEntry" option is passed', () => {
       it('triggers "onRemovedEntry" for each file and directory that doesn\'t exist in source directory and exists in target directory', async () => {
         const entriesPassedToOnRemovedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onRemovedEntry: (fsEntry) => entriesPassedToOnRemovedEntry.push(fsEntry),
         });
@@ -126,6 +131,7 @@ describe('dirDiff', () => {
     describe('when "skipContentComparison" option is set to true', () => {
       it('doesn\'t trigger "onModifiedEntry" for files with preserved size but changed content', async () => {
         const entriesPassedToOnModifiedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onModifiedEntry: (fsEntry) => entriesPassedToOnModifiedEntry.push(fsEntry),
           skipContentComparison: true,
@@ -140,6 +146,7 @@ describe('dirDiff', () => {
     describe('when "skipExtraIterations" option is set to true', () => {
       it('doesn\'t trigger "onAddedEntry" for children of added directories', async () => {
         const entriesPassedToOnAddedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onAddedEntry: (fsEntry) => entriesPassedToOnAddedEntry.push(fsEntry),
           skipExtraIterations: true,
@@ -155,6 +162,7 @@ describe('dirDiff', () => {
 
       it('doesn\'t trigger "onRemovedEntry" for children of removed directories', async () => {
         const entriesPassedToOnRemovedEntry = [];
+
         await dirDiff(sourcePath, targetPath, {
           onRemovedEntry: (fsEntry) => entriesPassedToOnRemovedEntry.push(fsEntry),
           skipExtraIterations: true,
@@ -213,6 +221,24 @@ describe('dirDiff', () => {
             // failed to remove temp file
           }
         }
+      });
+    });
+
+    describe('when paths contain not system-specific path separators', () => {
+      const sourcePathWithInvertedSeparators = invertPathSeparators(sourcePath);
+      const targetPathWithInvertedSeparators = invertPathSeparators(targetPath);
+
+      it('triggers callbacks with system-specific path separators fs entries', async () => {
+        const entriesPassedToOnEachEntry = [];
+
+        await dirDiff(sourcePathWithInvertedSeparators, targetPathWithInvertedSeparators, {
+          onEachEntry: (fsEntry) => entriesPassedToOnEachEntry.push(fsEntry),
+        });
+
+        expectEqualEntries(entriesPassedToOnEachEntry, [
+          ...expectedSourceEntries,
+          ...expectedTargetEntries,
+        ]);
       });
     });
   });
