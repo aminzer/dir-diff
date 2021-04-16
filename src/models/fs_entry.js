@@ -5,7 +5,7 @@ class FsEntry {
     relativePath,
     isFile,
     size,
-  }) {
+  } = {}) {
     this.name = name;
     this.absolutePath = absolutePath;
     this.relativePath = relativePath;
@@ -15,6 +15,10 @@ class FsEntry {
 
   get isDirectory() {
     return !this.isFile;
+  }
+
+  set isDirectory(isDirectory) {
+    this.isFile = !isDirectory;
   }
 }
 

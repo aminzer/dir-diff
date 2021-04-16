@@ -2,7 +2,7 @@ const path = require('path');
 const { FsEntry } = require('../../../src/models');
 
 describe('FsEntry', () => {
-  describe('#constructor', () => {
+  describe('constructor', () => {
     it('initializes instance with correct params', () => {
       const opts = {
         name: 'name',
@@ -18,10 +18,27 @@ describe('FsEntry', () => {
     });
   });
 
-  describe('#isDirectory', () => {
-    it('returns boolean opposite to "isFile', () => {
-      expect(new FsEntry({ isFile: true }).isDirectory).toBe(false);
-      expect(new FsEntry({ isFile: false }).isDirectory).toBe(true);
+  describe('get isDirectory', () => {
+    const fsEntry = new FsEntry();
+
+    it('returns boolean opposite to "isFile"', () => {
+      fsEntry.isFile = true;
+      expect(fsEntry.isDirectory).toBe(false);
+
+      fsEntry.isFile = false;
+      expect(fsEntry.isDirectory).toBe(true);
+    });
+  });
+
+  describe('set isDirectory', () => {
+    const fsEntry = new FsEntry();
+
+    it('sets "isFile" to opposite boolean to the passed value', () => {
+      fsEntry.isDirectory = true;
+      expect(fsEntry.isFile).toBe(false);
+
+      fsEntry.isDirectory = false;
+      expect(fsEntry.isFile).toBe(true);
     });
   });
 });
