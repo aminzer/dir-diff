@@ -1,4 +1,4 @@
-const { isDirExist } = require('../../utils/fs');
+const { isDirExist } = require('../utils/fs');
 
 async function validateDirPathArg(arg, argName) {
   if (!await isDirExist(arg)) {

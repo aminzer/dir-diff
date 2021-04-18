@@ -26,11 +26,21 @@ describe('iterateDirChildren', () => {
     });
   });
 
-  describe('when callback argument is not a function', () => {
-    it('throws error', async () => {
-      await expect(iterateDirChildren(__dirname, 'not a function'))
-        .rejects
-        .toThrow('Second argument must be a function');
+  describe('when "onEachChild" callback is not a function', () => {
+    describe('when "onEachChild" callback isn\'t set', () => {
+      it('throws error', async () => {
+        await expect(iterateDirChildren(__dirname))
+          .rejects
+          .toThrow('"onEachChild" is not a function');
+      });
+    });
+
+    describe('when "onEachChild" callback is a string', () => {
+      it('throws error', async () => {
+        await expect(iterateDirChildren(__dirname, 'not a function'))
+          .rejects
+          .toThrow('"onEachChild" is not a function');
+      });
     });
   });
 

@@ -1,6 +1,4 @@
-const validateBooleanArg = require('./validate_boolean_arg');
-const validateDirPathArg = require('./validate_dir_path_arg');
-const validateFunctionArg = require('./validate_function_arg');
+const { validateBooleanArg, validateDirPathArg, validateFunctionArg } = require('../validations');
 
 async function validateArgs({
   sourcePath,

@@ -1,4 +1,4 @@
-const { isBoolean } = require('../../utils/type');
+const { isBoolean } = require('../utils/type');
 
 function validateBooleanArg(arg, argName) {
   if (!isBoolean(arg)) {

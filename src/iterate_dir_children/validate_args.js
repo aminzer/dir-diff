@@ -1,13 +1,11 @@
-const { isDirExist } = require('../utils/fs');
+const { validateDirPathArg, validateFunctionArg } = require('../validations');
 
 async function validateArgs(dirPath, onEachChild) {
-  if (!await isDirExist(dirPath)) {
-    throw new Error(`Directory "${dirPath}" does not exist`);
-  }
+  await validateDirPathArg(dirPath, 'Directory');
 
-  if (typeof onEachChild !== 'function') {
-    throw new Error('Second argument must be a function');
-  }
+  validateFunctionArg(onEachChild, 'onEachChild', {
+    isRequired: true,
+  });
 }
 
 module.exports = validateArgs;
