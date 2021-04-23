@@ -1,6 +1,6 @@
 ### Overview
 
-Utility for recursive directory comparison.
+[NodeJS](https://nodejs.org) utility for recursive directory comparison.
 
 ### Installation
 
