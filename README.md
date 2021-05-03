@@ -56,6 +56,6 @@ dirDiff(sourcePath, targetPath, opts)
 * `isFile` - `true` if entry is file.
 * `isDirectory` - `true` if entry is directory.
 
-###Command line tool
+### Command line tool
 
 [@aminzer/dir-diff-cli](https://www.npmjs.com/package/@aminzer/dir-diff-cli)
