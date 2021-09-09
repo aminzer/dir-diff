@@ -4,6 +4,7 @@
     "jest"
   ],
   "env": {
+    "node": true,
     "jest": true
   }
 }
