@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/aminzer/dir-diff.git"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
