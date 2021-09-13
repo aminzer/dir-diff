@@ -16,5 +16,8 @@
   },
   "ignorePatterns": [
     "dist/**/*.js"
-  ]
+  ],
+  "rules": {
+    "linebreak-style": "off"
+  }
 }
