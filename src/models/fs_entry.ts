@@ -1,10 +1,20 @@
-class FsEntry {
+export default class FsEntry {
+  name;
+
+  absolutePath;
+
+  relativePath;
+
+  isFile;
+
+  size;
+
   constructor({
-    name,
-    absolutePath,
-    relativePath,
-    isFile,
-    size,
+    name = null,
+    absolutePath = null,
+    relativePath = null,
+    isFile = null,
+    size = null,
   } = {}) {
     this.name = name;
     this.absolutePath = absolutePath;
@@ -21,5 +31,3 @@ class FsEntry {
     this.isFile = !isDirectory;
   }
 }
-
-module.exports = FsEntry;

@@ -1,6 +1,6 @@
 const path = require('path');
-const dirDiff = require('../../src');
-const { FsEntry } = require('../../src/models');
+const { default: dirDiff } = require('../../dist');
+const { FsEntry } = require('../../dist/models');
 const expectedSourceEntries = require('../resources/common/source_fs_entries');
 const expectedTargetEntries = require('../resources/common/target_fs_entries');
 

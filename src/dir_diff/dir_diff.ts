@@ -1,9 +1,9 @@
-const iterateDirChildren = require('../iterate_dir_children');
-const getTargetFsEntry = require('./get_target_fs_entry');
-const { isContentEqual } = require('../utils/fs');
-const validateArgs = require('./validate_args');
+import iterateDirChildren from '../iterate_dir_children';
+import getTargetFsEntry from './get_target_fs_entry';
+import { isContentEqual } from '../utils/fs';
+import validateArgs from './validate_args';
 
-async function dirDiff(sourcePath, targetPath, {
+export default async function dirDiff(sourcePath, targetPath, {
   onEachEntry = null,
   onAddedEntry = null,
   onModifiedEntry = null,
@@ -77,5 +77,3 @@ async function dirDiff(sourcePath, targetPath, {
     }
   });
 }
-
-module.exports = dirDiff;

@@ -1,5 +1,5 @@
 const path = require('path');
-const { FsEntry } = require('../../../src/models');
+const { FsEntry } = require('../../../dist/models');
 
 describe('FsEntry', () => {
   describe('constructor', () => {

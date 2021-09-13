@@ -1,9 +1,13 @@
-const path = require('path');
-const { FsEntry } = require('../models');
-const { iterateInSeries } = require('../utils/array');
-const { stat, readdir } = require('../utils/fs');
+import * as path from 'path';
+import { FsEntry } from '../models';
+import { iterateInSeries } from '../utils/array';
+import { stat, readdir } from '../utils/fs';
 
-async function iterateDirChildrenRecursive(absoluteDirPath, relativeDirPath, onEachChild) {
+export default async function iterateDirChildrenRecursive(
+  absoluteDirPath,
+  relativeDirPath,
+  onEachChild,
+) {
   const entries = await readdir(absoluteDirPath);
 
   await iterateInSeries(entries, async (name) => {
@@ -34,5 +38,3 @@ async function iterateDirChildrenRecursive(absoluteDirPath, relativeDirPath, onE
     }
   });
 }
-
-module.exports = iterateDirChildrenRecursive;

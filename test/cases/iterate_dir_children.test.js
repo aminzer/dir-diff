@@ -1,6 +1,6 @@
 const path = require('path');
-const iterateDirChildren = require('../../src/iterate_dir_children');
-const { FsEntry } = require('../../src/models');
+const { default: iterateDirChildren } = require('../../dist/iterate_dir_children');
+const { FsEntry } = require('../../dist/models');
 const expectedFsEntries = require('../resources/common/source_fs_entries');
 
 const callback = () => { };

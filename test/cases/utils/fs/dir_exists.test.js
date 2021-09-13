@@ -1,5 +1,5 @@
 const path = require('path');
-const { isDirExist } = require('../../../../src/utils/fs');
+const { isDirExist } = require('../../../../dist/utils/fs');
 
 describe('dirExist', () => {
   describe('when path does not exist', () => {

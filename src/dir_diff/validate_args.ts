@@ -1,6 +1,6 @@
-const { validateBooleanArg, validateDirPathArg, validateFunctionArg } = require('../validations');
+import { validateBooleanArg, validateDirPathArg, validateFunctionArg } from '../validations';
 
-async function validateArgs({
+export default async function validateArgs({
   sourcePath,
   targetPath,
   onEachEntry,
@@ -21,5 +21,3 @@ async function validateArgs({
   validateBooleanArg(skipContentComparison, 'skipContentComparison');
   validateBooleanArg(skipExtraIterations, 'skipExtraIterations');
 }
-
-module.exports = validateArgs;

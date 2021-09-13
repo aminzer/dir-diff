@@ -1,8 +1,8 @@
-const path = require('path');
-const { FsEntry } = require('../models');
-const { stat } = require('../utils/fs');
+import * as path from 'path';
+import { FsEntry } from '../models';
+import { stat } from '../utils/fs';
 
-async function getTargetFsEntry(sourceFsEntry, targetRootPath) {
+export default async function getTargetFsEntry(sourceFsEntry, targetRootPath) {
   try {
     const targetFsEntryPath = path.join(targetRootPath, sourceFsEntry.relativePath);
     const targetFsEntryStats = await stat(targetFsEntryPath);
@@ -22,5 +22,3 @@ async function getTargetFsEntry(sourceFsEntry, targetRootPath) {
     return null;
   }
 }
-
-module.exports = getTargetFsEntry;
