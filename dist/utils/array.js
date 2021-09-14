@@ -14,9 +14,8 @@ exports.iterateInSeries = void 0;
 function iterateInSeries(array, asyncCallback) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let index = 0; index < array.length; index += 1) {
-            const element = array[index];
             // eslint-disable-next-line no-await-in-loop
-            yield asyncCallback(element, index);
+            yield asyncCallback(array[index], index);
         }
     });
 }

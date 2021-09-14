@@ -3,7 +3,7 @@ import getTargetFsEntry from './get_target_fs_entry';
 import { isContentEqual } from '../utils/fs';
 import validateArgs from './validate_args';
 
-export default async function dirDiff(sourcePath, targetPath, {
+export default async function dirDiff(sourcePath: string, targetPath: string, {
   onEachEntry = null,
   onAddedEntry = null,
   onModifiedEntry = null,
@@ -50,7 +50,11 @@ export default async function dirDiff(sourcePath, targetPath, {
       return;
     }
 
-    if (!skipContentComparison && !await isContentEqual(sourceFsEntry, targetFsEntry)) {
+    if (skipContentComparison) {
+      return;
+    }
+
+    if (!await isContentEqual(sourceFsEntry.absolutePath, targetFsEntry.absolutePath)) {
       await onModifiedEntry(sourceFsEntry);
     }
   });

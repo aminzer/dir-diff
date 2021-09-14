@@ -1,13 +1,13 @@
 export default class FsEntry {
-  name;
+  name: string;
 
-  absolutePath;
+  absolutePath: string;
 
-  relativePath;
+  relativePath: string;
 
-  isFile;
+  isFile: boolean;
 
-  size;
+  size: number;
 
   constructor({
     name = null,
@@ -23,11 +23,11 @@ export default class FsEntry {
     this.size = size;
   }
 
-  get isDirectory() {
+  get isDirectory(): boolean {
     return !this.isFile;
   }
 
-  set isDirectory(isDirectory) {
+  set isDirectory(isDirectory: boolean) {
     this.isFile = !isDirectory;
   }
 }

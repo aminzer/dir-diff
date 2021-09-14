@@ -27,10 +27,10 @@ function isDirExist(path) {
     });
 }
 exports.isDirExist = isDirExist;
-function isContentEqual(fileEntry1, fileEntry2) {
+function isContentEqual(filePath1, filePath2) {
     return __awaiter(this, void 0, void 0, function* () {
-        const stream1 = fs.createReadStream(fileEntry1.absolutePath);
-        const stream2 = fs.createReadStream(fileEntry2.absolutePath);
+        const stream1 = fs.createReadStream(filePath1);
+        const stream2 = fs.createReadStream(filePath2);
         return streamEqual(stream1, stream2);
     });
 }

@@ -46,7 +46,10 @@ function dirDiff(sourcePath, targetPath, { onEachEntry = null, onAddedEntry = nu
                 yield onModifiedEntry(sourceFsEntry);
                 return;
             }
-            if (!skipContentComparison && !(yield (0, fs_1.isContentEqual)(sourceFsEntry, targetFsEntry))) {
+            if (skipContentComparison) {
+                return;
+            }
+            if (!(yield (0, fs_1.isContentEqual)(sourceFsEntry.absolutePath, targetFsEntry.absolutePath))) {
                 yield onModifiedEntry(sourceFsEntry);
             }
         }));

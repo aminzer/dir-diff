@@ -1,6 +1,10 @@
 import { isNullish, isFunction } from '../utils/type';
 
-export default function validateFunctionArg(arg, argName, { isRequired = false } = {}) {
+export default function validateFunctionArg(
+  arg: any,
+  argName: string,
+  { isRequired = false } = {},
+) {
   if (isNullish(arg) && !isRequired) {
     return;
   }

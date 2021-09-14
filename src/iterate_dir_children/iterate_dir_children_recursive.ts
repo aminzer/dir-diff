@@ -4,13 +4,13 @@ import { iterateInSeries } from '../utils/array';
 import { stat, readdir } from '../utils/fs';
 
 export default async function iterateDirChildrenRecursive(
-  absoluteDirPath,
-  relativeDirPath,
-  onEachChild,
+  absoluteDirPath: string,
+  relativeDirPath: string,
+  onEachChild: (...args) => void,
 ) {
   const entries = await readdir(absoluteDirPath);
 
-  await iterateInSeries(entries, async (name) => {
+  await iterateInSeries(entries, async (name: string) => {
     const absolutePath = path.join(absoluteDirPath, name);
     const relativePath = relativeDirPath ? path.join(relativeDirPath, name) : name;
 

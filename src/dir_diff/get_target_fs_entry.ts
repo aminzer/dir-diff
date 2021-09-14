@@ -2,7 +2,10 @@ import * as path from 'path';
 import { FsEntry } from '../models';
 import { stat } from '../utils/fs';
 
-export default async function getTargetFsEntry(sourceFsEntry, targetRootPath) {
+export default async function getTargetFsEntry(
+  sourceFsEntry: FsEntry,
+  targetRootPath: string,
+): Promise<FsEntry> {
   try {
     const targetFsEntryPath = path.join(targetRootPath, sourceFsEntry.relativePath);
     const targetFsEntryStats = await stat(targetFsEntryPath);

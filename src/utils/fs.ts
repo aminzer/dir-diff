@@ -5,7 +5,7 @@ import * as streamEqual from 'stream-equal';
 export const readdir = util.promisify(fs.readdir);
 export const stat = util.promisify(fs.stat);
 
-export async function isDirExist(path) {
+export async function isDirExist(path: string): Promise<boolean> {
   try {
     const stats = await stat(path);
     return stats.isDirectory();
@@ -14,9 +14,9 @@ export async function isDirExist(path) {
   }
 }
 
-export async function isContentEqual(fileEntry1, fileEntry2) {
-  const stream1 = fs.createReadStream(fileEntry1.absolutePath);
-  const stream2 = fs.createReadStream(fileEntry2.absolutePath);
+export async function isContentEqual(filePath1: string, filePath2: string): Promise<boolean> {
+  const stream1 = fs.createReadStream(filePath1);
+  const stream2 = fs.createReadStream(filePath2);
 
   return streamEqual(stream1, stream2);
 }
