@@ -1,5 +1,5 @@
-const path = require('path');
-const { FsEntry } = require('../../../dist/models');
+import * as path from 'path';
+import { FsEntry } from '../../../dist/models';
 
 describe('FsEntry', () => {
   describe('constructor', () => {

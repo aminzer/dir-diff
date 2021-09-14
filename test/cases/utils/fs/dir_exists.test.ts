@@ -1,5 +1,5 @@
-const path = require('path');
-const { isDirExist } = require('../../../../dist/utils/fs');
+import * as path from 'path';
+import { isDirExist } from '../../../../dist/utils/fs';
 
 describe('dirExist', () => {
   describe('when path does not exist', () => {

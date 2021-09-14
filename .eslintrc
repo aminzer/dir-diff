@@ -15,7 +15,8 @@
     "project": "./tsconfig.json"
   },
   "ignorePatterns": [
-    "dist/**/*.js"
+    "dist/**/*.js",
+    "jest.config.js"
   ],
   "rules": {
     "linebreak-style": "off"

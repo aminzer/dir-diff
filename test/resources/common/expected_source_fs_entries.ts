@@ -1,8 +1,8 @@
-const path = require('path');
+import * as path from 'path';
 
 const separator = path.sep;
 
-module.exports = [{
+export default [{
   relativePath: '.dot_file_added', name: '.dot_file_added', isFile: true, size: 0,
 }, {
   relativePath: 'file1_added.txt', name: 'file1_added.txt', isFile: true, size: 0,

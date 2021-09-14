@@ -1,8 +1,8 @@
-const path = require('path');
-const { default: dirDiff } = require('../../dist');
-const { FsEntry } = require('../../dist/models');
-const expectedSourceEntries = require('../resources/common/source_fs_entries');
-const expectedTargetEntries = require('../resources/common/target_fs_entries');
+import * as path from 'path';
+import dirDiff from '../../dist';
+import { FsEntry } from '../../dist/models';
+import expectedSourceEntries from '../resources/common/expected_source_fs_entries';
+import expectedTargetEntries from '../resources/common/expected_target_fs_entries';
 
 function expectEqualEntries(fsEntries, expectedFsEntries) {
   expect(fsEntries.every((fsEntry) => fsEntry instanceof FsEntry)).toBe(true);
