@@ -19,6 +19,9 @@
     "url": "https://github.com/aminzer/dir-diff.git"
   },
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "build:watch": "npm run build -- --watch",
