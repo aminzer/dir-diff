@@ -20,9 +20,9 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
-    "lint": "eslint src/**/*.ts",
+    "build": "tsc --project tsconfig.build.json",
+    "build:watch": "npm run build -- --watch",
+    "lint": "eslint src/**/*.ts test/**/*.js",
     "lint:fix": "npm run lint -- --fix",
     "prepare": "husky install",
     "test": "jest"
