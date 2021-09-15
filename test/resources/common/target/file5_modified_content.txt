@@ -1,1 +1,2 @@
-Same files size, but different content: "v2"
+file5_modified_content.txt
+content v2

@@ -1,6 +1,6 @@
 import iterateDirChildren from '../iterate_dir_children';
 import getTargetFsEntry from './get_target_fs_entry';
-import { isContentEqual } from '../utils/fs';
+import { areFileContentsEqual } from '../utils/fs';
 import validateArgs from './validate_args';
 
 export default async function dirDiff(sourcePath: string, targetPath: string, {
@@ -54,7 +54,7 @@ export default async function dirDiff(sourcePath: string, targetPath: string, {
       return;
     }
 
-    if (!await isContentEqual(sourceFsEntry.absolutePath, targetFsEntry.absolutePath)) {
+    if (!await areFileContentsEqual(sourceFsEntry.absolutePath, targetFsEntry.absolutePath)) {
       await onModifiedEntry(sourceFsEntry);
     }
   });

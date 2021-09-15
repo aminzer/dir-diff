@@ -1,1 +1,2 @@
-Different files size: z
+file23_modified_size.txt
+content of length 3: ABC

@@ -14,7 +14,7 @@ export async function isDirExist(path: string): Promise<boolean> {
   }
 }
 
-export async function isContentEqual(filePath1: string, filePath2: string): Promise<boolean> {
+export async function areFileContentsEqual(filePath1: string, filePath2: string): Promise<boolean> {
   const stream1 = fs.createReadStream(filePath1);
   const stream2 = fs.createReadStream(filePath2);
 
