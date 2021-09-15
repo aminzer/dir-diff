@@ -1,2 +1,1 @@
-file23_modified_size.txt
-content of length 3: ABC
+file23_modified_size.txt / content of length 3: ABC

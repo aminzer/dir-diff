@@ -7,7 +7,7 @@ export default [{
 }, {
   relativePath: 'file4.txt', name: 'file4.txt', isFile: true, size: 9,
 }, {
-  relativePath: 'file5_modified_content.txt', name: 'file5_modified_content.txt', isFile: true, size: 38,
+  relativePath: 'file5_modified_content.txt', name: 'file5_modified_content.txt', isFile: true, size: 39,
 }, {
   relativePath: 'file6_removed.txt', name: 'file6_removed.txt', isFile: true, size: 17,
 }, {
@@ -15,7 +15,7 @@ export default [{
 }, {
   relativePath: `subdir2${separator}file21.txt`, name: 'file21.txt', isFile: true, size: 10,
 }, {
-  relativePath: `subdir2${separator}file23_modified_size.txt`, name: 'file23_modified_size.txt', isFile: true, size: 52,
+  relativePath: `subdir2${separator}file23_modified_size.txt`, name: 'file23_modified_size.txt', isFile: true, size: 53,
 }, {
   relativePath: `subdir2${separator}file24_removed.txt`, name: 'file24_removed.txt', isFile: true, size: 18,
 }, {
@@ -23,7 +23,7 @@ export default [{
 }, {
   relativePath: `subdir2${separator}subdir21${separator}file211.txt`, name: 'file211.txt', isFile: true, size: 11,
 }, {
-  relativePath: `subdir2${separator}subdir21${separator}file213_modified_content.txt`, name: 'file213_modified_content.txt', isFile: true, size: 40,
+  relativePath: `subdir2${separator}subdir21${separator}file213_modified_content.txt`, name: 'file213_modified_content.txt', isFile: true, size: 41,
 }, {
   relativePath: 'subdir3_removed', name: 'subdir3_removed', isFile: false, size: 0,
 }, {
