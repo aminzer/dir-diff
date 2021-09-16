@@ -1,1 +1,2 @@
-export { default } from './dir_diff';
+// eslint-disable-next-line import/prefer-default-export
+export { default as compareDirectories } from './compare_directories';

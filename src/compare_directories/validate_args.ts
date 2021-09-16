@@ -4,20 +4,20 @@ export default async function validateArgs({
   sourcePath,
   targetPath,
   onEachEntry,
-  onAddedEntry,
-  onModifiedEntry,
-  onRemovedEntry,
+  onSourceOnlyEntry,
+  onTargetOnlyEntry,
+  onDifferentEntries,
   skipContentComparison,
-  skipExtraIterations,
+  skipExcessNestedIterations,
 }) {
   await validateDirPathArg(sourcePath, 'Source directory');
   await validateDirPathArg(targetPath, 'Target directory');
 
   validateFunctionArg(onEachEntry, 'onEachEntry');
-  validateFunctionArg(onAddedEntry, 'onAddedEntry');
-  validateFunctionArg(onModifiedEntry, 'onModifiedEntry');
-  validateFunctionArg(onRemovedEntry, 'onRemovedEntry');
+  validateFunctionArg(onSourceOnlyEntry, 'onSourceOnlyEntry');
+  validateFunctionArg(onTargetOnlyEntry, 'onTargetOnlyEntry');
+  validateFunctionArg(onDifferentEntries, 'onDifferentEntries');
 
   validateBooleanArg(skipContentComparison, 'skipContentComparison');
-  validateBooleanArg(skipExtraIterations, 'skipExtraIterations');
+  validateBooleanArg(skipExcessNestedIterations, 'skipExcessNestedIterations');
 }

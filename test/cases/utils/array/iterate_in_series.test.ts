@@ -1,7 +1,7 @@
 import { iterateInSeries } from '../../../../dist/utils/array';
 
 describe('iterateInSeries', () => {
-  it('resolved to undefined', async () => {
+  it('is resolved to "undefined"', async () => {
     const returnValue = await iterateInSeries([], () => {});
 
     expect(returnValue).toBe(undefined);
