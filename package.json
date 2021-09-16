@@ -2,6 +2,8 @@
   "name": "@aminzer/dir-diff",
   "description": "Utility for recursive directory comparison",
   "version": "3.0.1",
+  "license": "ISC",
+  "author": "aminzer",
   "keywords": [
     "directory",
     "folder",
@@ -12,8 +14,6 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "author": "aminzer",
-  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.com/aminzer/dir-diff.git"
