@@ -15,6 +15,12 @@ export default class FsEntry {
     relativePath = null,
     isFile = null,
     size = null,
+  }: {
+    name?: string,
+    absolutePath?: string,
+    relativePath?: string,
+    isFile?: boolean,
+    size?: number,
   } = {}) {
     this.name = name;
     this.absolutePath = absolutePath;

@@ -2,11 +2,12 @@ import * as path from 'path';
 import { FsEntry } from '../models';
 import { iterateInSeries } from '../utils/array';
 import { stat, readdir } from '../utils/fs';
+import { OnEachChild } from './types';
 
 export default async function iterateDirChildrenRecursive(
   absoluteDirPath: string,
   relativeDirPath: string,
-  onEachChild: (...args) => void,
+  onEachChild: OnEachChild,
 ) {
   const entries = await readdir(absoluteDirPath);
 

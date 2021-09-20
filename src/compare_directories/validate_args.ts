@@ -1,15 +1,15 @@
 import { validateBooleanArg, validateDirPathArg, validateFunctionArg } from '../validations';
 
-export default async function validateArgs({
-  sourcePath,
-  targetPath,
-  onEachEntry,
-  onSourceOnlyEntry,
-  onTargetOnlyEntry,
-  onDifferentEntries,
-  skipContentComparison,
-  skipExcessNestedIterations,
-}) {
+export default async function validateArgs(
+  sourcePath: any,
+  targetPath: any,
+  onEachEntry: any,
+  onSourceOnlyEntry: any,
+  onTargetOnlyEntry: any,
+  onDifferentEntries: any,
+  skipContentComparison: any,
+  skipExcessNestedIterations: any,
+) {
   await validateDirPathArg(sourcePath, 'Source directory');
   await validateDirPathArg(targetPath, 'Target directory');
 

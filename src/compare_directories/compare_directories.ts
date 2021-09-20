@@ -1,6 +1,7 @@
 import iterateDirChildren from '../iterate_dir_children';
-import getMirroredFsEntry from './get_mirrored_fs_entry';
+import { FsEntry } from '../models';
 import { areFileContentsEqual } from '../utils/fs';
+import getMirroredFsEntry from './get_mirrored_fs_entry';
 import validateArgs from './validate_args';
 
 export default async function compareDirectories(
@@ -12,9 +13,16 @@ export default async function compareDirectories(
     onDifferentEntries = null,
     skipContentComparison = false,
     skipExcessNestedIterations = false,
+  }: {
+    onEachEntry?: (fsEntry: FsEntry) => void | Promise<void>,
+    onSourceOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>,
+    onTargetOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>,
+    onDifferentEntries?: (sourceFsEntry: FsEntry, targetFsEntry: FsEntry) => void | Promise<void>,
+    skipContentComparison?: boolean,
+    skipExcessNestedIterations?: boolean,
   } = {},
 ) {
-  await validateArgs({
+  await validateArgs(
     sourcePath,
     targetPath,
     onEachEntry,
@@ -23,7 +31,7 @@ export default async function compareDirectories(
     onDifferentEntries,
     skipContentComparison,
     skipExcessNestedIterations,
-  });
+  );
 
   await iterateDirChildren(sourcePath, async (sourceFsEntry, { skipEntryIteration }) => {
     if (onEachEntry) {
