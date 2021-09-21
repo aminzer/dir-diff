@@ -33,7 +33,9 @@ export default async function compareDirectories(
     skipExcessNestedIterations,
   );
 
-  await iterateDirectoryChildren(sourcePath, async (sourceFsEntry, { skipEntryChildrenIteration }) => {
+  await iterateDirectoryChildren(sourcePath, async (sourceFsEntry, {
+    skipEntryChildrenIteration,
+  }) => {
     if (onEachEntry) {
       await onEachEntry(sourceFsEntry);
     }
@@ -74,7 +76,9 @@ export default async function compareDirectories(
     return;
   }
 
-  await iterateDirectoryChildren(targetPath, async (targetFsEntry, { skipEntryChildrenIteration }) => {
+  await iterateDirectoryChildren(targetPath, async (targetFsEntry, {
+    skipEntryChildrenIteration,
+  }) => {
     if (onEachEntry) {
       await onEachEntry(targetFsEntry);
     }
