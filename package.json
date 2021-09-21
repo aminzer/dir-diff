@@ -19,6 +19,7 @@
     "url": "https://github.com/aminzer/dir-diff.git"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],

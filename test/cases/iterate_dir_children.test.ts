@@ -29,7 +29,7 @@ describe('iterateDirChildren', () => {
   describe('when "onEachChild" callback is not a function', () => {
     describe('when "onEachChild" callback isn\'t set', () => {
       it('throws error', async () => {
-        await expect(iterateDirChildren(__dirname))
+        await expect(iterateDirChildren(__dirname, undefined as any))
           .rejects
           .toThrow('"onEachChild" is not a function');
       });
@@ -37,7 +37,7 @@ describe('iterateDirChildren', () => {
 
     describe('when "onEachChild" callback is a string', () => {
       it('throws error', async () => {
-        await expect(iterateDirChildren(__dirname, 'not a function'))
+        await expect(iterateDirChildren(__dirname, 'not a function' as any))
           .rejects
           .toThrow('"onEachChild" is not a function');
       });
@@ -49,7 +49,9 @@ describe('iterateDirChildren', () => {
 
     it('triggers callback for each file and directory in source directory tree', async () => {
       const fsEntries = [];
-      await iterateDirChildren(dirPath, (fsEntry) => fsEntries.push(fsEntry));
+      await iterateDirChildren(dirPath, (fsEntry) => {
+        fsEntries.push(fsEntry);
+      });
 
       expect(fsEntries.every((fsEntry) => fsEntry instanceof FsEntry)).toBe(true);
       expect(fsEntries).toEqual(expectedFsEntries);
