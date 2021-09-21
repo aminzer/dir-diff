@@ -1,4 +1,4 @@
-import iterateDirChildren from '../iterate_dir_children';
+import iterateDirectoryChildren from '../iterate_directory_children';
 import { FsEntry } from '../models';
 import { areFileContentsEqual } from '../utils/fs';
 import getMirroredFsEntry from './get_mirrored_fs_entry';
@@ -33,7 +33,7 @@ export default async function compareDirectories(
     skipExcessNestedIterations,
   );
 
-  await iterateDirChildren(sourcePath, async (sourceFsEntry, { skipEntryIteration }) => {
+  await iterateDirectoryChildren(sourcePath, async (sourceFsEntry, { skipEntryChildrenIteration }) => {
     if (onEachEntry) {
       await onEachEntry(sourceFsEntry);
     }
@@ -46,7 +46,7 @@ export default async function compareDirectories(
       }
 
       if (skipExcessNestedIterations) {
-        skipEntryIteration();
+        skipEntryChildrenIteration();
       }
 
       return;
@@ -74,7 +74,7 @@ export default async function compareDirectories(
     return;
   }
 
-  await iterateDirChildren(targetPath, async (targetFsEntry, { skipEntryIteration }) => {
+  await iterateDirectoryChildren(targetPath, async (targetFsEntry, { skipEntryChildrenIteration }) => {
     if (onEachEntry) {
       await onEachEntry(targetFsEntry);
     }
@@ -87,7 +87,7 @@ export default async function compareDirectories(
       }
 
       if (skipExcessNestedIterations) {
-        skipEntryIteration();
+        skipEntryChildrenIteration();
       }
     }
   });

@@ -1,16 +1,16 @@
 import * as path from 'path';
-import iterateDirChildren from '../../dist/iterate_dir_children';
+import iterateDirectoryChildren from '../../dist/iterate_directory_children';
 import { FsEntry } from '../../dist/models';
 import expectedFsEntries from '../resources/common/expected_source_fs_entries';
 
 const callback = () => { };
 
-describe('iterateDirChildren', () => {
+describe('iterateDirectoryChildren', () => {
   describe('when path does not exist', () => {
     const invalidDirPath = path.join(__dirname, 'invalid/path');
 
     it('throws error', async () => {
-      await expect(iterateDirChildren(invalidDirPath, callback))
+      await expect(iterateDirectoryChildren(invalidDirPath, callback))
         .rejects
         .toThrow(`Directory "${invalidDirPath}" does not exist`);
     });
@@ -20,7 +20,7 @@ describe('iterateDirChildren', () => {
     const filePath = __filename;
 
     it('throws error', async () => {
-      await expect(iterateDirChildren(filePath, callback))
+      await expect(iterateDirectoryChildren(filePath, callback))
         .rejects
         .toThrow(`Directory "${filePath}" does not exist`);
     });
@@ -29,7 +29,7 @@ describe('iterateDirChildren', () => {
   describe('when "onEachChild" callback is not a function', () => {
     describe('when "onEachChild" callback isn\'t set', () => {
       it('throws error', async () => {
-        await expect(iterateDirChildren(__dirname, undefined as any))
+        await expect(iterateDirectoryChildren(__dirname, undefined as any))
           .rejects
           .toThrow('"onEachChild" is not a function');
       });
@@ -37,7 +37,7 @@ describe('iterateDirChildren', () => {
 
     describe('when "onEachChild" callback is a string', () => {
       it('throws error', async () => {
-        await expect(iterateDirChildren(__dirname, 'not a function' as any))
+        await expect(iterateDirectoryChildren(__dirname, 'not a function' as any))
           .rejects
           .toThrow('"onEachChild" is not a function');
       });
@@ -49,7 +49,7 @@ describe('iterateDirChildren', () => {
 
     it('triggers callback for each file and directory in source directory tree', async () => {
       const fsEntries = [];
-      await iterateDirChildren(dirPath, (fsEntry) => {
+      await iterateDirectoryChildren(dirPath, (fsEntry) => {
         fsEntries.push(fsEntry);
       });
 
@@ -57,13 +57,13 @@ describe('iterateDirChildren', () => {
       expect(fsEntries).toEqual(expectedFsEntries);
     });
 
-    describe('when "skipEntryIteration" is called for some directory', () => {
+    describe('when "skipEntryChildrenIteration" is called for some directory', () => {
       it('doesn\'t trigger callback for children of that directory', async () => {
         const fsEntries = [];
-        await iterateDirChildren(dirPath, (fsEntry, { skipEntryIteration }) => {
+        await iterateDirectoryChildren(dirPath, (fsEntry, { skipEntryChildrenIteration }) => {
           fsEntries.push(fsEntry);
           if (fsEntry.name === 'subdir2') {
-            skipEntryIteration();
+            skipEntryChildrenIteration();
           }
         });
 

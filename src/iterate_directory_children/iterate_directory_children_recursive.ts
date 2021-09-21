@@ -4,7 +4,7 @@ import { iterateInSeries } from '../utils/array';
 import { stat, readdir } from '../utils/fs';
 import { OnEachChild } from './types';
 
-export default async function iterateDirChildrenRecursive(
+export default async function iterateDirectoryChildrenRecursive(
   absoluteDirPath: string,
   relativeDirPath: string,
   onEachChild: OnEachChild,
@@ -28,14 +28,14 @@ export default async function iterateDirChildrenRecursive(
     });
 
     let iterateEntry = fsEntry.isDirectory;
-    const skipEntryIteration = () => {
+    const skipEntryChildrenIteration = () => {
       iterateEntry = false;
     };
 
-    await onEachChild(fsEntry, { skipEntryIteration });
+    await onEachChild(fsEntry, { skipEntryChildrenIteration });
 
     if (iterateEntry) {
-      await iterateDirChildrenRecursive(absolutePath, relativePath, onEachChild);
+      await iterateDirectoryChildrenRecursive(absolutePath, relativePath, onEachChild);
     }
   });
 }
