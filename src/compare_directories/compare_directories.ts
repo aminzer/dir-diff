@@ -5,8 +5,8 @@ import getMirroredFsEntry from './get_mirrored_fs_entry';
 import validateArgs from './validate_args';
 
 export default async function compareDirectories(
-  sourcePath: string,
-  targetPath: string, {
+  sourceDirPath: string,
+  targetDirPath: string, {
     onEachEntry = null,
     onSourceOnlyEntry = null,
     onTargetOnlyEntry = null,
@@ -23,8 +23,8 @@ export default async function compareDirectories(
   } = {},
 ) {
   await validateArgs(
-    sourcePath,
-    targetPath,
+    sourceDirPath,
+    targetDirPath,
     onEachEntry,
     onSourceOnlyEntry,
     onTargetOnlyEntry,
@@ -33,14 +33,14 @@ export default async function compareDirectories(
     skipExcessNestedIterations,
   );
 
-  await iterateDirectoryChildren(sourcePath, async (sourceFsEntry, {
+  await iterateDirectoryChildren(sourceDirPath, async (sourceFsEntry, {
     skipEntryChildrenIteration,
   }) => {
     if (onEachEntry) {
       await onEachEntry(sourceFsEntry);
     }
 
-    const targetFsEntry = await getMirroredFsEntry(sourceFsEntry, targetPath);
+    const targetFsEntry = await getMirroredFsEntry(sourceFsEntry, targetDirPath);
 
     if (!targetFsEntry) {
       if (onSourceOnlyEntry) {
@@ -76,14 +76,14 @@ export default async function compareDirectories(
     return;
   }
 
-  await iterateDirectoryChildren(targetPath, async (targetFsEntry, {
+  await iterateDirectoryChildren(targetDirPath, async (targetFsEntry, {
     skipEntryChildrenIteration,
   }) => {
     if (onEachEntry) {
       await onEachEntry(targetFsEntry);
     }
 
-    const sourceFsEntry = await getMirroredFsEntry(targetFsEntry, sourcePath);
+    const sourceFsEntry = await getMirroredFsEntry(targetFsEntry, sourceDirPath);
 
     if (!sourceFsEntry) {
       if (onTargetOnlyEntry) {

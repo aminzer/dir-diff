@@ -12,52 +12,52 @@ function expectEqualEntries(fsEntries, expectedFsEntries) {
 
 describe('compareDirectories', () => {
   describe('when source path does not exist', () => {
-    const sourcePath = path.join(__dirname, 'invalid/path');
-    const targetPath = __dirname;
+    const sourceDirPath = path.join(__dirname, 'invalid/path');
+    const targetDirPath = __dirname;
 
     it('throws error', async () => {
-      await expect(compareDirectories(sourcePath, targetPath))
+      await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
-        .toThrow(`Source directory "${sourcePath}" does not exist`);
+        .toThrow(`Source directory "${sourceDirPath}" does not exist`);
     });
   });
 
   describe('when target path does not exist', () => {
-    const sourcePath = __dirname;
-    const targetPath = path.join(__dirname, 'invalid/path');
+    const sourceDirPath = __dirname;
+    const targetDirPath = path.join(__dirname, 'invalid/path');
 
     it('throws error', async () => {
-      await expect(compareDirectories(sourcePath, targetPath))
+      await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
-        .toThrow(`Target directory "${targetPath}" does not exist`);
+        .toThrow(`Target directory "${targetDirPath}" does not exist`);
     });
   });
 
   describe('when source path corresponds to a file', () => {
-    const sourcePath = __filename;
-    const targetPath = __dirname;
+    const sourceDirPath = __filename;
+    const targetDirPath = __dirname;
 
     it('throws error', async () => {
-      await expect(compareDirectories(sourcePath, targetPath))
+      await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
-        .toThrow(`Source directory "${sourcePath}" does not exist`);
+        .toThrow(`Source directory "${sourceDirPath}" does not exist`);
     });
   });
 
   describe('when target path corresponds to a file', () => {
-    const sourcePath = __dirname;
-    const targetPath = __filename;
+    const sourceDirPath = __dirname;
+    const targetDirPath = __filename;
 
     it('throws error', async () => {
-      await expect(compareDirectories(sourcePath, targetPath))
+      await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
-        .toThrow(`Target directory "${targetPath}" does not exist`);
+        .toThrow(`Target directory "${targetDirPath}" does not exist`);
     });
   });
 
   describe('when both paths corresponds to directories', () => {
-    const sourcePath = path.join(__dirname, '../resources/common/source');
-    const targetPath = path.join(__dirname, '../resources/common/target');
+    const sourceDirPath = path.join(__dirname, '../resources/common/source');
+    const targetDirPath = path.join(__dirname, '../resources/common/target');
 
     const expectedSourceOnlyEntries = expectedSourceEntries.filter(({ name }) => name.includes('added'));
     const expectedDifferentSourceEntries = expectedSourceEntries.filter(({ name }) => name.includes('modified'));
@@ -66,7 +66,7 @@ describe('compareDirectories', () => {
 
     describe('when no additional options are passed', () => {
       it('is resolved to "undefined"', async () => {
-        expect(await compareDirectories(sourcePath, targetPath)).toBe(undefined);
+        expect(await compareDirectories(sourceDirPath, targetDirPath)).toBe(undefined);
       });
     });
 
@@ -74,7 +74,7 @@ describe('compareDirectories', () => {
       it('triggers "onEachEntry" for each file or directory from both source and target directories', async () => {
         const allEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onEachEntry: (fsEntry) => {
             allEntries.push(fsEntry);
           },
@@ -91,7 +91,7 @@ describe('compareDirectories', () => {
       it('triggers "onSourceOnlyEntry" for each file or directory that exists in source directory and doesn\'t exist in target directory', async () => {
         const sourceOnlyEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onSourceOnlyEntry: (fsEntry) => {
             sourceOnlyEntries.push(fsEntry);
           },
@@ -105,7 +105,7 @@ describe('compareDirectories', () => {
       it('triggers "onTargetOnlyEntry" for each file or directory that doesn\'t exist in source directory and exists in target directory', async () => {
         const targetOnlyEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onTargetOnlyEntry: (fsEntry) => {
             targetOnlyEntries.push(fsEntry);
           },
@@ -120,7 +120,7 @@ describe('compareDirectories', () => {
         const differentSourceEntries = [];
         const differentTargetEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onDifferentEntries: (sourceFsEntry, targetFsEntry) => {
             differentSourceEntries.push(sourceFsEntry);
             differentTargetEntries.push(targetFsEntry);
@@ -137,7 +137,7 @@ describe('compareDirectories', () => {
         const differentSourceEntries = [];
         const differentTargetEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onDifferentEntries: (sourceFsEntry, targetFsEntry) => {
             differentSourceEntries.push(sourceFsEntry);
             differentTargetEntries.push(targetFsEntry);
@@ -156,7 +156,7 @@ describe('compareDirectories', () => {
       it('doesn\'t trigger "onSourceOnlyEntry" for children of source-only directories', async () => {
         const sourceOnlyEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onSourceOnlyEntry: (fsEntry) => {
             sourceOnlyEntries.push(fsEntry);
           },
@@ -173,7 +173,7 @@ describe('compareDirectories', () => {
       it('doesn\'t trigger "onTargetOnlyEntry" for children of target-only directories', async () => {
         const targetOnlyEntries = [];
 
-        await compareDirectories(sourcePath, targetPath, {
+        await compareDirectories(sourceDirPath, targetDirPath, {
           onTargetOnlyEntry: (targetFsEntry) => {
             targetOnlyEntries.push(targetFsEntry);
           },
@@ -190,14 +190,14 @@ describe('compareDirectories', () => {
 
     describe('when entries have same name but different types (file or directory)', () => {
       const commonName = 'file_or_dir.txt';
-      const sourcePathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/source');
-      const targetPathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/target');
+      const sourceDirPathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/source');
+      const targetDirPathForCurrentCase = path.join(__dirname, '../resources/file_and_dir_equal_name/target');
 
       it('differs these entries', async () => {
         const sourceOnlyEntries = [];
         const targetOnlyEntries = [];
 
-        await compareDirectories(sourcePathForCurrentCase, targetPathForCurrentCase, {
+        await compareDirectories(sourceDirPathForCurrentCase, targetDirPathForCurrentCase, {
           onSourceOnlyEntry: (fsEntry) => {
             sourceOnlyEntries.push(fsEntry);
           },
@@ -210,7 +210,7 @@ describe('compareDirectories', () => {
         expect(sourceOnlyEntries.length).toBe(1);
         expect(sourceOnlyEntries[0]).toEqual({
           name: commonName,
-          absolutePath: path.join(sourcePathForCurrentCase, commonName),
+          absolutePath: path.join(sourceDirPathForCurrentCase, commonName),
           relativePath: commonName,
           isFile: false,
           size: 0,
@@ -219,7 +219,7 @@ describe('compareDirectories', () => {
         expect(targetOnlyEntries.length).toBe(1);
         expect(targetOnlyEntries[0]).toEqual({
           name: commonName,
-          absolutePath: path.join(targetPathForCurrentCase, commonName),
+          absolutePath: path.join(targetDirPathForCurrentCase, commonName),
           relativePath: commonName,
           isFile: true,
           size: 0,
@@ -233,7 +233,7 @@ describe('compareDirectories', () => {
       it('triggers callbacks with platform-specific path separator', async () => {
         const entriesPassedToOnEachEntry = [];
 
-        await compareDirectories(getUnixStylePath(sourcePath), getUnixStylePath(targetPath), {
+        await compareDirectories(getUnixStylePath(sourceDirPath), getUnixStylePath(targetDirPath), {
           onEachEntry: (fsEntry) => {
             entriesPassedToOnEachEntry.push(fsEntry);
           },

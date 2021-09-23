@@ -1,12 +1,13 @@
 {
   "name": "@aminzer/dir-diff",
-  "description": "Utility for recursive directory comparison",
+  "description": "Utility for recursive directory iteration and comparison",
   "version": "3.0.1",
   "license": "ISC",
   "author": "aminzer",
   "keywords": [
     "directory",
     "folder",
+    "iteration",
     "difference",
     "comparison",
     "compare"

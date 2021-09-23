@@ -1,8 +1,8 @@
 import { validateBooleanArg, validateDirPathArg, validateFunctionArg } from '../validations';
 
 export default async function validateArgs(
-  sourcePath: any,
-  targetPath: any,
+  sourceDirPath: any,
+  targetDirPath: any,
   onEachEntry: any,
   onSourceOnlyEntry: any,
   onTargetOnlyEntry: any,
@@ -10,8 +10,8 @@ export default async function validateArgs(
   skipContentComparison: any,
   skipExcessNestedIterations: any,
 ) {
-  await validateDirPathArg(sourcePath, 'Source directory');
-  await validateDirPathArg(targetPath, 'Target directory');
+  await validateDirPathArg(sourceDirPath, 'Source directory');
+  await validateDirPathArg(targetDirPath, 'Target directory');
 
   validateFunctionArg(onEachEntry, 'onEachEntry');
   validateFunctionArg(onSourceOnlyEntry, 'onSourceOnlyEntry');
