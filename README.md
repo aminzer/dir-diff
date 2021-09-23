@@ -17,7 +17,7 @@ const { iterateDirectoryChildren } = require('@aminzer/dir-diff');
 
 await iterateDirectoryChildren('d:/work', (fsEntry) => {
   console.log(`${fsEntry.isFile ? 'File' : 'Directory'} ${fsEntry.relativePath} was found`);
-}));
+});
 ```
 
 ##### Directory comparison
