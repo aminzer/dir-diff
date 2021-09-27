@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { FsEntry } from '../../../dist/models';
+import { FsEntry } from '../../../dist';
 
 describe('FsEntry', () => {
   describe('constructor', () => {

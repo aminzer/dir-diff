@@ -93,11 +93,18 @@ compareDirectories(sourceDirPath, targetDirPath, opts)
 
 **FsEntry**
 
-`FsEntry` - class representing File System Entry (file or directory). Instance properties:
+##### Overview
 
+`FsEntry` - class representing File System Entry (file or directory).
+
+```javascript
+const { FsEntry } =  require('@aminzer/dir-diff');
+```
+
+Instance properties:
 * `name` (`string`) - name of entry.
 * `absolutePath` (`string`) - absolute path to entry.
-* `relativePath` (`string`) -relative path to entry. It's relative to source directory for `source` entries and relative to target directory for `target` entries.
+* `relativePath` (`string`) - relative path to entry. It's relative to source directory for `source` entries and relative to target directory for `target` entries.
 * `size` (`number`) - size of file in bytes, `0` for directories.
 * `isFile` (`boolean`) - `true` if entry is file.
 * `isDirectory` (`boolean`) - `true` if entry is directory.

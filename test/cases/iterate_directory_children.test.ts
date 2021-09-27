@@ -1,5 +1,5 @@
 import * as path from 'path';
-import iterateDirectoryChildren from '../../dist/iterate_directory_children';
+import { iterateDirectoryChildren } from '../../dist';
 import { FsEntry } from '../../dist/models';
 import expectedFsEntries from '../resources/common/expected_source_fs_entries';
 
