@@ -36,16 +36,12 @@ export default async function compareDirectories(
   await iterateDirectoryChildren(sourceDirPath, async (sourceFsEntry, {
     skipEntryChildrenIteration,
   }) => {
-    if (onEachEntry) {
-      await onEachEntry(sourceFsEntry);
-    }
+    await onEachEntry?.(sourceFsEntry);
 
     const targetFsEntry = await getMirroredFsEntry(sourceFsEntry, targetDirPath);
 
     if (!targetFsEntry) {
-      if (onSourceOnlyEntry) {
-        await onSourceOnlyEntry(sourceFsEntry);
-      }
+      await onSourceOnlyEntry?.(sourceFsEntry);
 
       if (skipExcessNestedIterations) {
         skipEntryChildrenIteration();
@@ -79,16 +75,12 @@ export default async function compareDirectories(
   await iterateDirectoryChildren(targetDirPath, async (targetFsEntry, {
     skipEntryChildrenIteration,
   }) => {
-    if (onEachEntry) {
-      await onEachEntry(targetFsEntry);
-    }
+    await onEachEntry?.(targetFsEntry);
 
     const sourceFsEntry = await getMirroredFsEntry(targetFsEntry, sourceDirPath);
 
     if (!sourceFsEntry) {
-      if (onTargetOnlyEntry) {
-        await onTargetOnlyEntry(targetFsEntry);
-      }
+      await onTargetOnlyEntry?.(targetFsEntry);
 
       if (skipExcessNestedIterations) {
         skipEntryChildrenIteration();
