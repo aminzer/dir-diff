@@ -85,7 +85,7 @@ compareDirectories(sourceDirPath, targetDirPath, opts)
     * `onDifferentEntries` (`function`, `null` by default) - function that is called for files that are present in both source and target directories but have different content. Corresponding `FsEntry` instances are passed as parameters.
     * `onEachEntry` (`function`, `null` by default) - function that is called for all files and directories from both source and target directories. Corresponding `FsEntry` instance is passed as parameter.
     * `skipContentComparison` (`boolean`, `false` by default) - files are compared by size only. Content comparison is skipped. It speeds up execution by avoiding "expensive" content-comparison process for large files.
-    * `skipExcessNestedIterations` (`boolean`, `false` by default) - children of added/removed directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
+    * `skipExcessNestedIterations` (`boolean`, `false` by default) - children of source-only and target-only directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
 
 ##### Return value
 
