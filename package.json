@@ -1,9 +1,7 @@
 {
   "name": "@aminzer/dir-diff",
-  "description": "Utility for recursive directory iteration and comparison",
   "version": "4.0.4",
-  "license": "MIT",
-  "author": "aminzer",
+  "description": "Utility for recursive directory iteration and comparison",
   "keywords": [
     "directory",
     "folder",
@@ -12,13 +10,12 @@
     "comparison",
     "compare"
   ],
-  "engines": {
-    "node": ">=10.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/aminzer/dir-diff.git"
   },
+  "license": "MIT",
+  "author": "aminzer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -51,5 +48,8 @@
     "npm-run-all": "^4.1.5",
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
