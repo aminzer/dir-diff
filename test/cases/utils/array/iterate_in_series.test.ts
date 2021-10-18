@@ -1,7 +1,7 @@
 import { iterateInSeries } from '../../../../dist/utils/array';
 
 describe('iterateInSeries', () => {
-  describe('when async callback is executed without rejections for each element', () => {
+  describe('when callback is executed without rejections for each element', () => {
     let buffer = '';
     let returnValue;
 
@@ -19,14 +19,14 @@ describe('iterateInSeries', () => {
         .toBe(undefined);
     });
 
-    it('calls async callback in series for each array element', async () => {
+    it('triggers callback in series for each array element', async () => {
       await returnValue;
 
       expect(buffer).toBe('a0.b1.c2.');
     });
   });
 
-  describe('when async callback rejects with error for some element', () => {
+  describe('when callback rejects with error for some element', () => {
     let buffer = '';
     let returnValue;
 
@@ -48,7 +48,7 @@ describe('iterateInSeries', () => {
         .toThrow('Test error');
     });
 
-    it("doesn't call callback for elements after rejected one", async () => {
+    it("doesn't trigger callback after rejected element", async () => {
       try {
         await returnValue;
       } catch (err) {

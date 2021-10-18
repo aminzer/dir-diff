@@ -15,7 +15,7 @@ describe('compareDirectories', () => {
     const sourceDirPath = path.join(__dirname, 'invalid/path');
     const targetDirPath = __dirname;
 
-    it('throws error', async () => {
+    it('is rejected with error', async () => {
       await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
         .toThrow(`Source directory "${sourceDirPath}" does not exist`);
@@ -26,7 +26,7 @@ describe('compareDirectories', () => {
     const sourceDirPath = __dirname;
     const targetDirPath = path.join(__dirname, 'invalid/path');
 
-    it('throws error', async () => {
+    it('is rejected with error', async () => {
       await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
         .toThrow(`Target directory "${targetDirPath}" does not exist`);
@@ -37,7 +37,7 @@ describe('compareDirectories', () => {
     const sourceDirPath = __filename;
     const targetDirPath = __dirname;
 
-    it('throws error', async () => {
+    it('is rejected with error', async () => {
       await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
         .toThrow(`Source directory "${sourceDirPath}" does not exist`);
@@ -48,7 +48,7 @@ describe('compareDirectories', () => {
     const sourceDirPath = __dirname;
     const targetDirPath = __filename;
 
-    it('throws error', async () => {
+    it('is rejected with error', async () => {
       await expect(compareDirectories(sourceDirPath, targetDirPath))
         .rejects
         .toThrow(`Target directory "${targetDirPath}" does not exist`);
@@ -243,6 +243,41 @@ describe('compareDirectories', () => {
           ...expectedSourceEntries,
           ...expectedTargetEntries,
         ]);
+      });
+    });
+
+    describe('when "onEachEntry" is rejected for some file or directory', () => {
+      let fsEntries;
+      let returnValue;
+
+      beforeEach(async () => {
+        fsEntries = [];
+
+        returnValue = compareDirectories(sourceDirPath, targetDirPath, {
+          onEachEntry: (fsEntry) => {
+            if (fsEntry.absolutePath.includes(targetDirPath)) {
+              throw new Error('Test error');
+            }
+
+            fsEntries.push(fsEntry);
+          },
+        });
+      });
+
+      it('is rejected with corresponding error', async () => {
+        await expect(returnValue)
+          .rejects
+          .toThrow('Test error');
+      });
+
+      it("doesn't trigger callback after rejected file or directory", async () => {
+        try {
+          await returnValue;
+        } catch (err) {
+          // ignored
+        }
+
+        expect(fsEntries).toEqual(expectedSourceEntries);
       });
     });
   });
