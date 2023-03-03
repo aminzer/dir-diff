@@ -6,7 +6,8 @@ import validateArgs from './validate_args';
 
 export default async function compareDirectories(
   sourceDirPath: string,
-  targetDirPath: string, {
+  targetDirPath: string,
+  {
     onEachEntry = null,
     onSourceOnlyEntry = null,
     onTargetOnlyEntry = null,

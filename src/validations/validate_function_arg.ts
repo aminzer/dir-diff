@@ -2,7 +2,8 @@ import { isNullish, isFunction } from '../utils/type';
 
 export default function validateFunctionArg(
   arg: any,
-  argName: string, {
+  argName: string,
+  {
     isRequired = false,
   }: {
     isRequired?: boolean,

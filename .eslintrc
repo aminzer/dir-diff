@@ -19,6 +19,7 @@
     "jest.config.js"
   ],
   "rules": {
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "no-restricted-exports": "off"
   }
 }
