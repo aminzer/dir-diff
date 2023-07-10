@@ -1,2 +1,2 @@
 // eslint-disable-next-line import/prefer-default-export
-export { default as FsEntry } from './fs_entry';
+export { default as FsEntry } from './FsEntry';
