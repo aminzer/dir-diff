@@ -1,6 +1,6 @@
 {
   "name": "@aminzer/dir-diff",
-  "version": "4.0.13",
+  "version": "5.0.0",
   "description": "Utility for recursive directory iteration and comparison",
   "publishConfig": {
     "access": "public"
