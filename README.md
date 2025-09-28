@@ -4,26 +4,14 @@
 
 ### Installation
 
-```
+```bash
 npm i @aminzer/dir-diff
 ```
 
 ### Usage examples
 
-##### Directory iteration
-
-```javascript
-const { iterateDirectoryChildren } = require('@aminzer/dir-diff');
-
-await iterateDirectoryChildren('d:/work', (fsEntry) => {
-  console.log(`${fsEntry.isFile ? 'File' : 'Directory'} ${fsEntry.relativePath} was found`);
-});
-```
-
-##### Directory comparison
-
-```javascript
-const { compareDirectories } = require('@aminzer/dir-diff');
+```typescript
+import { compareDirectories } from '@aminzer/dir-diff';
 
 await compareDirectories('d:/work', 'e:/backups/work', {
   onSourceOnlyEntry: (fsEntry) => {
@@ -40,38 +28,13 @@ await compareDirectories('d:/work', 'e:/backups/work', {
 
 ### API
 
-**iterateDirectoryChildren**
-
-##### Overview
-
-`iterateDirectoryChildren` is used for recursive iteration of directory children.
-
-
-```javascript
-iterateDirectoryChildren(dirPath, onEachChild);
-```
-
-##### Parameters
-
-* `dirPath` (`string`, required) - path to the directory which children should be iterated.
-* `onEachChild` (`function`, required) - callback that is called for each child file and directory.
-
-`onEachChild` callback accepts following arguments:
-* `fsEntry` (`FsEntry`) - currently iterated child file or directory.
-* `additionalArgs` (`object`, optional) - additional callback arguments:
-    * `skipEntryChildrenIteration` (`function`) - if this function is called within `onEachChild` function then iteration of entry children will be skipped.
-
-##### Return value
-
-`Promise` that becomes fulfilled when directory children iteration is completed.
-
 **compareDirectories**
 
 ##### Overview
 
 `compareDirectories` is used for recursive comparison of 2 directories.
 
-```javascript
+```typescript
 compareDirectories(sourceDirPath, targetDirPath, opts)
 ```
 
@@ -97,8 +60,8 @@ compareDirectories(sourceDirPath, targetDirPath, opts)
 
 `FsEntry` - class representing File System Entry (file or directory).
 
-```javascript
-const { FsEntry } =  require('@aminzer/dir-diff');
+```typescript
+import { FsEntry } from '@aminzer/dir-diff';
 ```
 
 Instance properties:

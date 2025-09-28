@@ -1,42 +1,35 @@
-import iterateDirectoryChildren from '../iterateDirectoryChildren';
-import { FsEntry } from '../models';
+import { traverseDirectory, FsEntry, directoryExists } from '@aminzer/traverse-directory';
 import { areFileContentsEqual } from '../utils/fs';
 import getMirroredFsEntry from './getMirroredFsEntry';
-import validateArgs from './validateArgs';
 
 const compareDirectories = async (
   sourceDirPath: string,
   targetDirPath: string,
   {
-    onEachEntry = null,
-    onSourceOnlyEntry = null,
-    onTargetOnlyEntry = null,
-    onDifferentEntries = null,
-    skipContentComparison = false,
-    skipExcessNestedIterations = false,
-  }: {
-    onEachEntry?: (fsEntry: FsEntry) => void | Promise<void>,
-    onSourceOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>,
-    onTargetOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>,
-    onDifferentEntries?: (sourceFsEntry: FsEntry, targetFsEntry: FsEntry) => void | Promise<void>,
-    skipContentComparison?: boolean,
-    skipExcessNestedIterations?: boolean,
-  } = {},
-): Promise<void> => {
-  await validateArgs(
-    sourceDirPath,
-    targetDirPath,
     onEachEntry,
     onSourceOnlyEntry,
     onTargetOnlyEntry,
     onDifferentEntries,
     skipContentComparison,
     skipExcessNestedIterations,
-  );
+  }: {
+    onEachEntry?: (fsEntry: FsEntry) => void | Promise<void>;
+    onSourceOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>;
+    onTargetOnlyEntry?: (fsEntry: FsEntry) => void | Promise<void>;
+    onDifferentEntries?: (sourceFsEntry: FsEntry, targetFsEntry: FsEntry) => void | Promise<void>;
+    skipContentComparison?: boolean;
+    skipExcessNestedIterations?: boolean;
+  } = {},
+): Promise<void> => {
+  if (!(await directoryExists(sourceDirPath))) {
+    throw new Error(`Source directory "${sourceDirPath}" does not exist`);
+  }
 
-  await iterateDirectoryChildren(sourceDirPath, async (sourceFsEntry, {
-    skipEntryChildrenIteration,
-  }) => {
+  if (!(await directoryExists(targetDirPath))) {
+    throw new Error(`Target directory "${targetDirPath}" does not exist`);
+  }
+
+  await traverseDirectory(sourceDirPath, async (sourceFsEntry, { skipEntryChildrenIteration }) => {
     await onEachEntry?.(sourceFsEntry);
 
     const targetFsEntry = await getMirroredFsEntry(sourceFsEntry, targetDirPath);
@@ -64,7 +57,7 @@ const compareDirectories = async (
       return;
     }
 
-    if (!await areFileContentsEqual(sourceFsEntry.absolutePath, targetFsEntry.absolutePath)) {
+    if (!(await areFileContentsEqual(sourceFsEntry.absolutePath, targetFsEntry.absolutePath))) {
       await onDifferentEntries(sourceFsEntry, targetFsEntry);
     }
   });
@@ -73,9 +66,7 @@ const compareDirectories = async (
     return;
   }
 
-  await iterateDirectoryChildren(targetDirPath, async (targetFsEntry, {
-    skipEntryChildrenIteration,
-  }) => {
+  await traverseDirectory(targetDirPath, async (targetFsEntry, { skipEntryChildrenIteration }) => {
     await onEachEntry?.(targetFsEntry);
 
     const sourceFsEntry = await getMirroredFsEntry(targetFsEntry, sourceDirPath);

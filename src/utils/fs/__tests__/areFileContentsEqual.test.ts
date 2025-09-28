@@ -1,7 +1,8 @@
-import * as path from 'path';
-import areFileContentsEqual from './areFileContentsEqual';
+import { join } from 'node:path';
+import areFileContentsEqual from '../areFileContentsEqual';
 
-const getFilePath = (fileName: string): string => path.join(__dirname, `../../../test/resources/common/${fileName}`);
+const getFilePath = (fileName: string): string =>
+  join(__dirname, `../../../../test/resources/common/${fileName}`);
 
 describe('utils > fs > areFileContentsEqual', () => {
   describe('when files have equal contents', () => {
