@@ -1,5 +1,5 @@
 import { createReadStream } from 'fs';
-import * as streamEqual from 'stream-equal';
+import streamEqual from 'stream-equal';
 
 const areFileContentsEqual = async (filePath1: string, filePath2: string): Promise<boolean> => {
   const stream1 = createReadStream(filePath1);

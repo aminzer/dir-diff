@@ -1,4 +1,6 @@
+import assert from 'node:assert';
 import { join, resolve, sep } from 'node:path';
+import { beforeEach, describe, it } from 'node:test';
 import { FsEntry } from '@aminzer/traverse-directory';
 import compareDirectories from '../compareDirectories';
 
@@ -130,7 +132,7 @@ const expectedSourceEntries = prepareFsEntries(
       size: 17,
     },
   ],
-  resolve(__dirname, '../../../test/resources/common/source'),
+  resolve(import.meta.dirname, '../../../test/resources/common/source'),
 );
 
 const expectedTargetEntries = prepareFsEntries(
@@ -214,63 +216,63 @@ const expectedTargetEntries = prepareFsEntries(
       size: 18,
     },
   ],
-  resolve(__dirname, '../../../test/resources/common/target'),
+  resolve(import.meta.dirname, '../../../test/resources/common/target'),
 );
 
 function expectEqualEntries(fsEntries: FsEntry[], expectedFsEntries: FsEntry[]) {
-  expect(fsEntries.every((fsEntry) => fsEntry instanceof FsEntry)).toBe(true);
+  assert.ok(fsEntries.every((fsEntry) => fsEntry instanceof FsEntry));
 
-  expect(fsEntries).toEqual(expectedFsEntries);
+  assert.deepStrictEqual(fsEntries, expectedFsEntries);
 }
 
 describe('compareDirectories', () => {
   describe('when source path does not exist', () => {
-    const sourceDirPath = join(__dirname, 'invalid/path');
-    const targetDirPath = __dirname;
+    const sourceDirPath = join(import.meta.dirname, 'invalid/path');
+    const targetDirPath = import.meta.dirname;
 
     it('is rejected with error', async () => {
-      await expect(compareDirectories(sourceDirPath, targetDirPath)).rejects.toThrow(
-        `Source directory "${sourceDirPath}" does not exist`,
-      );
+      await assert.rejects(() => compareDirectories(sourceDirPath, targetDirPath), {
+        message: `Source directory "${sourceDirPath}" does not exist`,
+      });
     });
   });
 
   describe('when target path does not exist', () => {
-    const sourceDirPath = __dirname;
-    const targetDirPath = join(__dirname, 'invalid/path');
+    const sourceDirPath = import.meta.dirname;
+    const targetDirPath = join(import.meta.dirname, 'invalid/path');
 
     it('is rejected with error', async () => {
-      await expect(compareDirectories(sourceDirPath, targetDirPath)).rejects.toThrow(
-        `Target directory "${targetDirPath}" does not exist`,
-      );
+      await assert.rejects(() => compareDirectories(sourceDirPath, targetDirPath), {
+        message: `Target directory "${targetDirPath}" does not exist`,
+      });
     });
   });
 
   describe('when source path corresponds to a file', () => {
-    const sourceDirPath = __filename;
-    const targetDirPath = __dirname;
+    const sourceDirPath = import.meta.filename;
+    const targetDirPath = import.meta.dirname;
 
     it('is rejected with error', async () => {
-      await expect(compareDirectories(sourceDirPath, targetDirPath)).rejects.toThrow(
-        `Source directory "${sourceDirPath}" does not exist`,
-      );
+      await assert.rejects(() => compareDirectories(sourceDirPath, targetDirPath), {
+        message: `Source directory "${sourceDirPath}" does not exist`,
+      });
     });
   });
 
   describe('when target path corresponds to a file', () => {
-    const sourceDirPath = __dirname;
-    const targetDirPath = __filename;
+    const sourceDirPath = import.meta.dirname;
+    const targetDirPath = import.meta.filename;
 
     it('is rejected with error', async () => {
-      await expect(compareDirectories(sourceDirPath, targetDirPath)).rejects.toThrow(
-        `Target directory "${targetDirPath}" does not exist`,
-      );
+      await assert.rejects(() => compareDirectories(sourceDirPath, targetDirPath), {
+        message: `Target directory "${targetDirPath}" does not exist`,
+      });
     });
   });
 
   describe('when both paths corresponds to directories', () => {
-    const sourceDirPath = join(__dirname, '../../../test/resources/common/source');
-    const targetDirPath = join(__dirname, '../../../test/resources/common/target');
+    const sourceDirPath = join(import.meta.dirname, '../../../test/resources/common/source');
+    const targetDirPath = join(import.meta.dirname, '../../../test/resources/common/target');
 
     const expectedSourceOnlyEntries = expectedSourceEntries.filter(({ name }) =>
       name.includes('added'),
@@ -287,7 +289,7 @@ describe('compareDirectories', () => {
 
     describe('when no additional options are passed', () => {
       it('is resolved to "undefined"', async () => {
-        expect(await compareDirectories(sourceDirPath, targetDirPath)).toBe(undefined);
+        assert.strictEqual(await compareDirectories(sourceDirPath, targetDirPath), undefined);
       });
     });
 
@@ -410,11 +412,11 @@ describe('compareDirectories', () => {
     describe('when entries have same name but different types (file or directory)', () => {
       const commonName = 'file_or_dir.txt';
       const sourceDirPathForCurrentCase = join(
-        __dirname,
+        import.meta.dirname,
         '../../../test/resources/file_and_dir_equal_name/source',
       );
       const targetDirPathForCurrentCase = join(
-        __dirname,
+        import.meta.dirname,
         '../../../test/resources/file_and_dir_equal_name/target',
       );
 
@@ -432,23 +434,25 @@ describe('compareDirectories', () => {
           skipExcessNestedIterations: true,
         });
 
-        expect(sourceOnlyEntries.length).toBe(1);
-        expect(sourceOnlyEntries[0].name).toBe(commonName);
-        expect(sourceOnlyEntries[0].absolutePath).toBe(
+        assert.strictEqual(sourceOnlyEntries.length, 1);
+        assert.strictEqual(sourceOnlyEntries[0].name, commonName);
+        assert.strictEqual(
+          sourceOnlyEntries[0].absolutePath,
           join(sourceDirPathForCurrentCase, commonName),
         );
-        expect(sourceOnlyEntries[0].relativePath).toBe(commonName);
-        expect(sourceOnlyEntries[0].isFile).toBe(false);
-        expect(sourceOnlyEntries[0].size).toBe(0);
+        assert.strictEqual(sourceOnlyEntries[0].relativePath, commonName);
+        assert.strictEqual(sourceOnlyEntries[0].isFile, false);
+        assert.strictEqual(sourceOnlyEntries[0].size, 0);
 
-        expect(targetOnlyEntries.length).toBe(1);
-        expect(targetOnlyEntries[0].name).toBe(commonName);
-        expect(targetOnlyEntries[0].absolutePath).toBe(
+        assert.strictEqual(targetOnlyEntries.length, 1);
+        assert.strictEqual(targetOnlyEntries[0].name, commonName);
+        assert.strictEqual(
+          targetOnlyEntries[0].absolutePath,
           join(targetDirPathForCurrentCase, commonName),
         );
-        expect(targetOnlyEntries[0].relativePath).toBe(commonName);
-        expect(targetOnlyEntries[0].isFile).toBe(true);
-        expect(targetOnlyEntries[0].size).toBe(0);
+        assert.strictEqual(targetOnlyEntries[0].relativePath, commonName);
+        assert.strictEqual(targetOnlyEntries[0].isFile, true);
+        assert.strictEqual(targetOnlyEntries[0].size, 0);
       });
     });
 
@@ -490,7 +494,7 @@ describe('compareDirectories', () => {
       });
 
       it('is rejected with corresponding error', async () => {
-        await expect(returnValue).rejects.toThrow('Test error');
+        await assert.rejects(returnValue, { message: 'Test error' });
       });
 
       it("doesn't trigger callback after rejected file or directory", async () => {
@@ -500,7 +504,7 @@ describe('compareDirectories', () => {
           // ignored
         }
 
-        expect(fsEntries).toEqual(expectedSourceEntries);
+        assert.deepStrictEqual(fsEntries, expectedSourceEntries);
       });
     });
   });
