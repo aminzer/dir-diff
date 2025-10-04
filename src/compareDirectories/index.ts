@@ -1,1 +1,1 @@
-export { default } from './compareDirectories';
+export { default } from './compareDirectories.js';

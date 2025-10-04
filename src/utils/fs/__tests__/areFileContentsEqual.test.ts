@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { join } from 'node:path';
 import { describe, it } from 'node:test';
-import areFileContentsEqual from '../areFileContentsEqual';
+import areFileContentsEqual from '../areFileContentsEqual.js';
 
 const getFilePath = (fileName: string): string =>
   join(import.meta.dirname, `../../../../test/resources/common/${fileName}`);

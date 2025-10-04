@@ -1,6 +1,6 @@
 import { traverseDirectory, FsEntry, directoryExists } from '@aminzer/traverse-directory';
-import { areFileContentsEqual } from '../utils/fs';
-import getMirroredFsEntry from './getMirroredFsEntry';
+import { areFileContentsEqual } from '../utils/fs/index.js';
+import getMirroredFsEntry from './getMirroredFsEntry.js';
 
 const compareDirectories = async (
   sourceDirPath: string,

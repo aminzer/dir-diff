@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import { join, resolve, sep } from 'node:path';
 import { beforeEach, describe, it } from 'node:test';
 import { FsEntry } from '@aminzer/traverse-directory';
-import compareDirectories from '../compareDirectories';
+import compareDirectories from '../compareDirectories.js';
 
 const prepareFsEntries = (
   entries: {
