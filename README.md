@@ -1,6 +1,6 @@
 ### Overview
 
-[NodeJS](https://nodejs.org) utility for recursive directory iteration and comparison.
+[NodeJS](https://nodejs.org) utility for recursive directory comparison.
 
 ### Installation
 
@@ -43,10 +43,10 @@ compareDirectories(sourceDirPath, targetDirPath, opts)
 * `sourceDirPath` (`string`, required) - path to the source directory.
 * `targetDirPath` (`string`, required) - path to the target directory.
 * `opts` (`object`, optional) - additional options to pass:
-    * `onSourceOnlyEntry` (`function`, `null` by default) - function that is called for files and directories that are present in source directory, but are missing in target directory. Corresponding `FsEntry` instance is passed as parameter.
-    * `onTargetOnlyEntry` (`function`, `null` by default) - function that is called for files and directories that are missing in source directory, but are present in target directory. Corresponding `FsEntry` instance is passed as parameter.
-    * `onDifferentEntries` (`function`, `null` by default) - function that is called for files that are present in both source and target directories but have different content. Corresponding `FsEntry` instances are passed as parameters.
-    * `onEachEntry` (`function`, `null` by default) - function that is called for all files and directories from both source and target directories. Corresponding `FsEntry` instance is passed as parameter.
+    * `onSourceOnlyEntry` (`function`, `undefined` by default) - function that is called for files and directories that are present in source directory, but are missing in target directory. Corresponding `FsEntry` instance is passed as parameter.
+    * `onTargetOnlyEntry` (`function`, `undefined` by default) - function that is called for files and directories that are missing in source directory, but are present in target directory. Corresponding `FsEntry` instance is passed as parameter.
+    * `onDifferentEntries` (`function`, `undefined` by default) - function that is called for files that are present in both source and target directories but have different content. Corresponding `FsEntry` instances are passed as parameters.
+    * `onEachEntry` (`function`, `undefined` by default) - function that is called for all files and directories from both source and target directories. Corresponding `FsEntry` instance is passed as parameter.
     * `skipContentComparison` (`boolean`, `false` by default) - files are compared by size only. Content comparison is skipped. It speeds up execution by avoiding "expensive" content-comparison process for large files.
     * `skipExcessNestedIterations` (`boolean`, `false` by default) - children of source-only and target-only directories are not considered. It speeds up execution by avoiding recursive calls for such directories.
 
